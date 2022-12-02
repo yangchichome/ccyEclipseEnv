@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Kosaraju_iterative2 {
+public class Kosaraju_iterative_Pass {
 	public static java.util.Stack<Integer> nodeOrder = new java.util.Stack<Integer>();
 	public static java.util.Stack<Integer> edgesStacks = new java.util.Stack<Integer>();
 	public static java.util.Stack<Integer> backStacks = new java.util.Stack<Integer>();
