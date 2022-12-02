@@ -11,18 +11,23 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Kosaraju3_iterative {
+public class Kosaraju_iterative {
+	public static java.util.Stack<Integer> nodeOrder = new java.util.Stack<Integer>();
+	public static java.util.Stack<Integer> edgesStacks = new java.util.Stack<Integer>();
+	public static java.util.Stack<Integer> backStacks = new java.util.Stack<Integer>();
+	public static int[] sccLens = new int[6];
+	public static int count=0;
+	public static HashMap<Integer, graphInfo> graphAll = new HashMap<Integer, graphInfo>();
+	
 	public static class graphInfo {
 		public boolean exp;
 		public ArrayList<Integer> edges;
 		public ArrayList<Integer> edgesRev;
-//		public Integer order;
 		
 		public graphInfo() {
 			this.exp = false;
 			this.edges = new ArrayList<>();
 			this.edgesRev = new ArrayList<>();
-//			this.order = 0;
 		}	
 		public void setexpTrue () {
 			exp = true;
@@ -32,15 +37,10 @@ public class Kosaraju3_iterative {
 			exp = false;
 		}
 	}
-	public static java.util.Stack<Integer> nodeOrder = new java.util.Stack<Integer>();
-	public static java.util.Stack<Integer> edgesStacks = new java.util.Stack<Integer>();
-	public static java.util.Stack<Integer> backStacks = new java.util.Stack<Integer>();
-	public static int[] sccLens = new int[6];
-	public static int count=0;
-	public static HashMap<Integer, graphInfo> graphAll = new HashMap<Integer, graphInfo>();
+
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		File file = new File("src/algorithmsCouese/graphR.txt");
+		File file = new File("src/algorithmsCouese/graph0.txt");
 		getGraphs(file);
 		ArrayList<Integer> nodes = new ArrayList<Integer>(graphAll.keySet());
 		//Loop G 
@@ -75,7 +75,6 @@ public class Kosaraju3_iterative {
 			}
 			int SSC2 = count;
 			int SSCsize = SSC2-SSC1;
-//			System.out.println("scc len :"+(SSCsize));
 			addSCClen(SSCsize);
 		}
 		System.out.println(Arrays.toString(sccLens));
@@ -145,10 +144,11 @@ public class Kosaraju3_iterative {
 			if (graphT2.exp == false) {
 				graphT2.setexpTrue();
 				graphAll.put(j, graphT2);
-//				System.out.println("	DFS2 in :"+j);
+				System.out.println("	DFS2 in :"+j);
 				edgesStacks.push(j);
 				backStacks.push(j);
 			}
+			setnodeOrder();
 		}
 		setnodeOrder();
 	}
@@ -226,12 +226,6 @@ public class Kosaraju3_iterative {
 			input.close();
 		} // finally
 		
-	}
-	private static void showSCC() {
-//		Collections.sort(sccLens,Collections.reverseOrder());
-//		for (int i=0;i< Math.min(5,sccLens.size());i++) {
-//			System.out.println("SCCs"+(i+1)+" :"+sccLens.get(i));
-//		}
 	}
 }
 //https://www.youtube.com/watch?v=Qdh6-a_2MxE
