@@ -53,7 +53,7 @@ public class Inversions {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub 
 		List<Integer> stngFile = new ArrayList<Integer>();
-		Scanner scnr = new Scanner(new FileReader("src/algorithmsCouese/intsData.txt"));
+		Scanner scnr = new Scanner(new FileReader("src/algorithmsCouese/inversion/intsData.txt"));
 		Integer str;
 		while (scnr.hasNext()) {
 		            str = Integer.valueOf(scnr.next());
