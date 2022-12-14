@@ -1,4 +1,4 @@
-package algorithmsCouese;
+package algorithmsCouese.karasuba;
 
 public class karatsuba {
 	
