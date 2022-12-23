@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class median {
-	public static File file = new File("src/algorithmsCouese/MedianMaintenance/mediansC1.txt");
+	public static File file = new File("src/algorithmsCouese/MedianMaintenance/mediansAll.txt");
 	
 	public static void addNumber (int number,PriorityQueue<Integer> lowers, PriorityQueue<Integer> highers) {
 		if (lowers.size() == 0 || number < lowers.peek()) {
@@ -36,7 +36,8 @@ public class median {
 		PriorityQueue<Integer> smallerHeap = lowers.size() > highers.size() ? highers : lowers;
 		
 		if (biggerHeap.size() == smallerHeap.size()) {
-			return ((double)biggerHeap.peek() + smallerHeap.peek()) / 2;
+//			return ((double)biggerHeap.peek() + smallerHeap.peek()) / 2; // youtube define
+			return smallerHeap.peek(); //course define
 		}else {
 			return biggerHeap.peek();
 		}
@@ -64,7 +65,7 @@ public class median {
 		int[] arrayInt = getinput();
 		double[] medians = getMedians(arrayInt);
 		double answers = Arrays.stream(medians).sum() % 10000 ;
-		System.out.println("End");
+		System.out.println("End"+answers);
 	}
 	
 	private static int[] getinput() throws IOException {
