@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class QuickSort_simple {
+public class QuickSort {
 	public static int count =0;
 	public static int middleOfThree(int a, int b, int c)
 	{
