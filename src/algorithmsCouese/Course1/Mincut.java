@@ -1,4 +1,4 @@
-package algorithmsCouese.mincut;
+package algorithmsCouese.Course1;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -137,7 +137,7 @@ public class Mincut {
 	public static void construct(HashMap<Integer, ArrayList<Integer>> adjList, 
 			ArrayList<Integer> vertices) throws IOException
 	{
-		File file = new File("src/algorithmsCouese/mincut/adjList.txt");
+		File file = new File("src/algorithmsCouese/Course1/adjList.txt");
 		BufferedReader input = new BufferedReader(new FileReader(file));
 		try 
 		{

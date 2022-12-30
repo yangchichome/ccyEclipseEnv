@@ -1,4 +1,4 @@
-package algorithmsCouese.karasuba;
+package algorithmsCouese.Course1;
 
 public class karatsuba {
 	

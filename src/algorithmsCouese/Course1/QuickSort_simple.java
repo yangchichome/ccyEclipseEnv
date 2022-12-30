@@ -1,4 +1,4 @@
-package algorithmsCouese.quicksort;
+package algorithmsCouese.Course1;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -89,7 +89,7 @@ public class QuickSort_simple {
 		// TODO Auto-generated method stub  
 		System.out.print("sort2"+'\n');
 		ArrayList<Integer> stngFile = new ArrayList<Integer>();
-		Scanner scnr = new Scanner(new FileReader("src/algorithmsCouese/quicksort/quicksortData.txt"));
+		Scanner scnr = new Scanner(new FileReader("src/algorithmsCouese/Course1/quicksortData.txt"));
 		Integer str;
 		while (scnr.hasNext()) {
 		            str = Integer.valueOf(scnr.next());
