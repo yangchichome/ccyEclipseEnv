@@ -22,9 +22,9 @@ public class schedulejobs {
 			this.length=0l;
 		}
 	}
-	// /Leedcodepractice/src/algorithmsCouese/Course3/jobsTestCase1
+	// /Leedcodepractice/src/algorithmsCouese/Course3/input_random_10_40.txt
 	private static File file1 = new File("src/algorithmsCouese/Course3/jobs.txt");
-//	private static File file1 = new File("src/algorithmsCouese/Course3/jobsTestCase2.txt");
+//	private static File file1 = new File("src/algorithmsCouese/Course3/input_random_40_5120.txt");
 	private static File file2 = new File("src/algorithmsCouese/Course3/edges.txt");
 	private static HashMap<Long,ArrayList<jobInfo>> jobPriorityD = new HashMap<Long,ArrayList<jobInfo>>();
 	private static HashMap<Double,ArrayList<jobInfo>> jobPriorityR = new HashMap<Double,ArrayList<jobInfo>>();
@@ -52,13 +52,10 @@ public class schedulejobs {
 			while (!weights.isEmpty()) {
 				Long obj = Collections.max(weights);
 				int index = weights.indexOf(obj);
+				
 				Long weight = weights.get(index);
 				Long length = lenghts.get(index);
 				sumlength = sumlength+length;
-				Long maxLong = Long.MAX_VALUE - sumlength*weight ;
-				if (maxLong < sumtime){
-					System.out.println("Stop");
-				}
 				sumtime = sumtime + sumlength*weight;
 				System.out.println("weight :"+weight);
 				System.out.println("length :"+length);
@@ -68,6 +65,7 @@ public class schedulejobs {
 				System.out.println("");
 				sumall.add(sumtime);
 				weights.remove(index);
+				lenghts.remove(index);
 			}
 			jobPriorityD.remove(maxkey);
 		}
@@ -98,6 +96,7 @@ public class schedulejobs {
 				sumlength = sumlength+length;
 				sumtime = sumtime + sumlength*weight;
 				weights.remove(index);
+				lenghts.remove(index);
 			}
 			jobPriorityR.remove(maxkey);
 		}
