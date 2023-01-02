@@ -22,10 +22,7 @@ public class schedulejobs {
 			this.length=0l;
 		}
 	}
-	// /Leedcodepractice/src/algorithmsCouese/Course3/input_random_10_40.txt
 	private static File file1 = new File("src/algorithmsCouese/Course3/jobs.txt");
-//	private static File file1 = new File("src/algorithmsCouese/Course3/input_random_40_5120.txt");
-	private static File file2 = new File("src/algorithmsCouese/Course3/edges.txt");
 	private static HashMap<Long,ArrayList<jobInfo>> jobPriorityD = new HashMap<Long,ArrayList<jobInfo>>();
 	private static HashMap<Double,ArrayList<jobInfo>> jobPriorityR = new HashMap<Double,ArrayList<jobInfo>>();
 	
