@@ -1,4 +1,4 @@
-package algorithmsCouese.dijkstra_shortest_path;
+package algorithmsCouese.Course2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ public class Dijkstra {
 
 	public static HashMap<Integer, Integer> dist = new HashMap<Integer, Integer>();
 	public static HashMap<Integer, ArrayList<Integer>> prev = new HashMap<Integer, ArrayList<Integer>>();
-	public static File file = new File("src/algorithmsCouese/dijkstra_shortest_path/dijkstraData.txt");
+	public static File file = new File("src/algorithmsCouese/Course2/dijkstraData.txt");
 	public static ArrayList<Integer> vertices = new ArrayList<>();
 	public static boolean[] explored;
 	public static Boolean getminLen = false;
