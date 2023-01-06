@@ -1,4 +1,4 @@
-package algorithmsCouese.kosaraju;
+package algorithmsCouese.Course2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,7 +32,7 @@ public class Kosaraju_iterative_Pass {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		File file = new File("src/algorithmsCouese/kosaraju/graphR.txt");
+		File file = new File("src/algorithmsCouese/Course2/graphR.txt");
 		getGraphs(file);
 		ArrayList<Integer> nodes = new ArrayList<Integer>(graphAll.keySet());
 		setExp(nodes);
