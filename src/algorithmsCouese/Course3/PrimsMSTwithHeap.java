@@ -41,7 +41,6 @@ public class PrimsMSTwithHeap {
 	private static HashSet<Integer> V = new HashSet<>();
 	private static HashMap<Integer,ArrayList<edge>> Graph = new HashMap<Integer,ArrayList<edge>>();
 	private static PriorityQueue<edge> heapV = new PriorityQueue<edge>(2184,new edgeComparator()); //V-X
-	private static PriorityQueue<edge> heapX = new PriorityQueue<edge>(2184,new edgeComparator()); //X
 	private static boolean[] visited = new boolean[501] ;
 	
 	public static void main(String[] args) throws IOException {
