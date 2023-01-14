@@ -39,9 +39,9 @@ public class Huffman {
 			return 0;
 		}
 	}
-	///Leedcodepractice/src/algorithmsCouese/Course3/input_random_1_10.txt
-//	private static File file = new File("src/algorithmsCouese/Course3/huffman.txt");
-	private static File file = new File("src/algorithmsCouese/Course3/case1.txt");
+	private static File file = new File("src/algorithmsCouese/Course3/huffman.txt");
+//	private static File file = new File("src/algorithmsCouese/Course3/input_random_48_10000.txt");
+//	private static File file = new File("src/algorithmsCouese/Course3/case2.txt");
 	private static HashMap<String,bitInfo> bitInfos = new HashMap<String,bitInfo>();
 	private static HashMap<String,Integer> weights = new HashMap<String,Integer>();
 	private static PriorityQueue<symBol> symbols = new PriorityQueue<symBol>(4000,new symbolCompare());
@@ -51,8 +51,6 @@ public class Huffman {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		setSymbols();
-//		Integer minLen = Integer.MAX_VALUE;
-//		Integer maxLen = Integer.MIN_VALUE;
 		
 		while(symbols.size()>1) {
 			//get symbols
@@ -60,7 +58,7 @@ public class Huffman {
 			symBol bigs = symbols.poll();
 			
 			//set new symbol value
-//			System
+			System.out.println("smaller0	"+smalls.name+"	weight	"+smalls.weight+"	bigs1	"+bigs.name+"	weight	"+bigs.weight);
 			Integer weightNew = smalls.weight + bigs.weight;
 			String nameNew = smalls.name+"_"+bigs.name;
 			symBol symbolNew = new symBol(nameNew,weightNew);
