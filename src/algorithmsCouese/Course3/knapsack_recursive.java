@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class knapsack_smallArray {
+public class knapsack_recursive {
 	
 	public static class itemInfo {
 		public int value;
