@@ -6,9 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import algorithmsCouese.Course3.Huffman.symBol;
-
-public class knapsack {
+public class knapsack_smallArray {
 	
 	public static class itemInfo {
 		public int value;
@@ -19,9 +17,10 @@ public class knapsack {
 		}
 	}
 	
-//	private static File file = new File("src/algorithmsCouese/Course3/knapsack1.txt");
-	private static File file = new File("src/algorithmsCouese/Course3/input_random_10_100_10.txt");
-//	private static File file = new File("src/algorithmsCouese/Course3/case2.txt");
+	
+	private static File file = new File("src/algorithmsCouese/Course3/knapsack1.txt");
+//	private static File file = new File("src/algorithmsCouese/Course3/input_random_40_1000000_2000.txt");
+//	private static File file = new File("src/algorithmsCouese/Course3/case1.txt");
 	private static ArrayList<itemInfo> items = new ArrayList<>(); 
 	private static int knapsacksize;
 	
@@ -40,13 +39,15 @@ public class knapsack {
 		for (int i=1;i<=itemsNumber;i++) {
 			for (int x=0;x<=knapsacksize;x++) {
 				int newX = x-items.get(i).weight;
+				
 				if (newX >=0) {
 					A2d[i][x]=Math.max(A2d[i-1][x], A2d[i-1][x-items.get(i).weight]+items.get(i).value);
+				}else {
+					A2d[i][x]=Math.max(A2d[i-1][x], 0);
 				}
 			}
 		}
 		System.out.println("Answer :"+A2d[itemsNumber][knapsacksize]);
-		System.out.print("End");
 	}
 	private static void setitemList() throws IOException {
 		// TODO Auto-generated method stub
@@ -54,9 +55,6 @@ public class knapsack {
 		try {
 			// Read first line of text from the file
 			String line = input.readLine();
-//			String[] strs = line.split(" ");
-//			knapsacksize = Integer.parseInt(strs[0]);
-////			remove first line 
 //			line = input.readLine();
 			while (line != null) {
 				// Split the line of text  a vector of Strings
