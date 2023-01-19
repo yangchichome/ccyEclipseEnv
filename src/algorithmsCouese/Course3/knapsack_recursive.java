@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class knapsack_recursive {
 	
@@ -16,13 +17,20 @@ public class knapsack_recursive {
 			this.weight=weight;
 		}
 	}
+	public static class corrdinate {
+		public int X;
+		public int Y;
+		public corrdinate(int X,int Y) {
+			this.X=X;
+			this.Y=Y;
+		}
+	}
 	
-	
-	private static File file = new File("src/algorithmsCouese/Course3/knapsack1.txt");
-//	private static File file = new File("src/algorithmsCouese/Course3/input_random_40_1000000_2000.txt");
+//	private static File file = new File("src/algorithmsCouese/Course3/knapsack1.txt");
+	private static File file = new File("src/algorithmsCouese/Course3/input_random_10_100_10.txt");
 //	private static File file = new File("src/algorithmsCouese/Course3/case1.txt");
 	private static ArrayList<itemInfo> items = new ArrayList<>(); 
-	private static int knapsacksize;
+	private static HashMap<corrdinate,Integer> valueMap = new HashMap<corrdinate,Integer>(); 
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -32,22 +40,30 @@ public class knapsack_recursive {
 		int itemsNumber = items.get(0).weight;
 		int knapsacksize = items.get(0).value;
 		
-		int[][] A2d = new int[itemsNumber+1][knapsacksize+1];
-		for (int i=0;i<=knapsacksize;i++) {
-			A2d[0][i]=0;
+		int maxValue = knapsack(itemsNumber,knapsacksize);
+		
+		System.out.println("Answer :"+maxValue);
+	}
+	private static int knapsack(int itemsNumber, int knapsacksize) {
+		// TODO Auto-generated method stub
+		
+		corrdinate corNow = new corrdinate(itemsNumber,knapsacksize);
+		if (valueMap.containsKey(corNow)) return valueMap.get(corNow);
+		
+		if (itemsNumber == 0 || knapsacksize ==0) {
+			valueMap.put(corNow, 0);
+			System.out.println("X :"+itemsNumber+" Y :"+knapsacksize);
+			return 0;
 		}
-		for (int i=1;i<=itemsNumber;i++) {
-			for (int x=0;x<=knapsacksize;x++) {
-				int newX = x-items.get(i).weight;
-				
-				if (newX >=0) {
-					A2d[i][x]=Math.max(A2d[i-1][x], A2d[i-1][x-items.get(i).weight]+items.get(i).value);
-				}else {
-					A2d[i][x]=Math.max(A2d[i-1][x], 0);
-				}
-			}
+		int valueExcluded = knapsack(itemsNumber-1,knapsacksize);
+		int valueIncluded = 0;
+		if (knapsacksize >= items.get(itemsNumber).weight) {
+			valueIncluded =	knapsack(itemsNumber-1,knapsacksize-items.get(itemsNumber).weight)+items.get(itemsNumber).value;
 		}
-		System.out.println("Answer :"+A2d[itemsNumber][knapsacksize]);
+		int maxFinal = Math.max(valueExcluded, valueIncluded);
+		valueMap.put(corNow, maxFinal);
+		System.out.println("X :"+itemsNumber+" Y :"+knapsacksize);
+		return maxFinal;
 	}
 	private static void setitemList() throws IOException {
 		// TODO Auto-generated method stub

@@ -22,7 +22,6 @@ public class knapsack_iteration {
 //	private static File file = new File("src/algorithmsCouese/Course3/input_random_40_1000000_2000.txt");
 //	private static File file = new File("src/algorithmsCouese/Course3/case1.txt");
 	private static ArrayList<itemInfo> items = new ArrayList<>(); 
-	private static int knapsacksize;
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
