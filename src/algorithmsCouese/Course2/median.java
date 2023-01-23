@@ -1,4 +1,4 @@
-package algorithmsCouese.MedianMaintenance;
+package algorithmsCouese.Course2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class median {
-	public static File file = new File("src/algorithmsCouese/MedianMaintenance/mediansAll.txt");
+	public static File file = new File("src/algorithmsCouese/Course2/Median.txt");
 	
 	public static void addNumber (int number,PriorityQueue<Integer> lowers, PriorityQueue<Integer> highers) {
 		if (lowers.size() == 0 || number < lowers.peek()) {
@@ -65,7 +65,7 @@ public class median {
 		int[] arrayInt = getinput();
 		double[] medians = getMedians(arrayInt);
 		double answers = Arrays.stream(medians).sum() % 10000 ;
-		System.out.println("End"+answers);
+		System.out.println("End "+answers);
 	}
 	
 	private static int[] getinput() throws IOException {

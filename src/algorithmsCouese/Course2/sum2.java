@@ -1,4 +1,4 @@
-package algorithmsCouese.Sum;
+package algorithmsCouese.Course2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,9 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 public class sum2 {
-	public static File file = new File("src/algorithmsCouese/Sum/2sum.txt");
+	public static File file = new File("src/algorithmsCouese/Course2/algo1-programming_prob-2sum.txt");
 	public static HashMap<Long,ArrayList<Long>> dividedMap = new HashMap<Long,ArrayList<Long>>();
 	public static boolean[] answers = new boolean[20002];
 	public static void main(String[] args) throws IOException {
