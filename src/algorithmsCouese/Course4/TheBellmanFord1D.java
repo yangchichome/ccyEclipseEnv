@@ -9,12 +9,12 @@ import algorithmsCouese.Course4.Johnson_APSP.edge;
 
 public class TheBellmanFord1D {
 	
-	public static boolean main(ArrayList<edge> graph,HashSet<Integer> v2, int verticeSize) {
+	public static Object[] main(ArrayList<edge> graph,HashSet<Integer> v2, int verticeSize) {
 		// TODO Auto-generated method stub
 		int ilen = verticeSize;
 		int[] d = new int[ilen];
 		int[] p = new int[ilen];
-		
+		boolean check = true;
 		for(int i=1;i<ilen;i++) {
 			d[i]= Integer.MAX_VALUE;
 		}
@@ -35,13 +35,18 @@ public class TheBellmanFord1D {
 					}
 					if (i==ilen-1) {
 						System.out.println("change in final iteration negative Cycle exist");
-						return false;
+						check = false;
 					}
 					d[v]=du+Wuv;
 					p[v]=u;
 				}
 			}
+			
 		}
-		return true;
+		Object[] bell = new Object[3];
+		bell[0]=d;
+		bell[1]=p;
+		bell[2]=check;
+		return bell;
 	}
 }

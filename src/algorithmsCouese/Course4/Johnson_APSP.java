@@ -5,11 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.PriorityQueue;
 
 
@@ -47,9 +45,9 @@ public class Johnson_APSP {
 			this.cost=cost;
 		}
 	}
-	private static File file = new File("src/algorithmsCouese/Course4/input_random_44_2048.txt");
-//	private static File file = new File("src/algorithmsCouese/Course4/input_random_42_2048.txt");
-//	private static File file = new File("src/algorithmsCouese/Course4/g2.txt");
+//	private static File file = new File("src/algorithmsCouese/Course4/large.txt");
+//	private static File file = new File("src/algorithmsCouese/Course4/input_random_10_8.txt");
+	private static File file = new File("src/algorithmsCouese/Course4/g3.txt");
 //	private static File file = new File("src/algorithmsCouese/Course4/case4.txt");
 	private static HashSet<Integer> V = new HashSet<>();
 	
@@ -61,34 +59,17 @@ public class Johnson_APSP {
 		// TODO Auto-generated method stub
 		setMap();
 		
-		// check negative cycle
-		if(!TheBellmanFord1D.main(GraphPlus,V,verticeSize)) return;
+		// check negative cycle by TheBellmanFord
+		Object[] bellAns = TheBellmanFord1D.main(GraphPlus,V,verticeSize);
+		if(!(boolean) bellAns[2])return;
+		int[] d = (int[]) bellAns[0];
 		
-		//For each v ,define pv = length of shortest s -> v in G'.
-		int[] p = new int[verticeSize];
-		for (Integer vertice :V) {
-//			System.out.println(" V:"+vertice);
-			for(edge edge0:GraphPlus) {
-				int u = edge0.start;
-				int v = edge0.end;
-				int puv = edge0.cost;
-				int ps = Integer.MAX_VALUE;
-				if (v == vertice) {
-					int psTmp = p[u]+puv;
-//					System.out.println(" u:"+u+" v:"+v+" puv:"+puv);
-					if (p[v] > psTmp) {
-						p[v] = psTmp;
-//						System.out.println(" p[v]:"+p[v]);
-					}
-				}
-			}
-		}
 		//For each e = (u,v) ,define Ce' = Ce + Pu - Pv
 		for (edge edge0: Graph) {
 			int u = edge0.start;
 			int v = edge0.end;
 			int puv = edge0.cost;
-			int puvNew = puv + p[u] - p[v];
+			int puvNew = puv + d[u] - d[v];
 //			System.out.println(" u:"+u+" v:"+v+" puv:"+puv+" pu:"+p[u]+" pv"+p[v]+" puvNew:"+puvNew);
 			// set edgeTo data
 			ArrayList<edgeTo> edgeTo0s = new ArrayList<>();
@@ -105,7 +86,7 @@ public class Johnson_APSP {
 		ArrayList<Integer> pathEnd = new ArrayList<>();
 		for (int start:V) {
 			Object[] results = dijkstra(edgeTos, verticeSize,start );
-			Object[] ans = findShortestPath(results,start,p);
+			Object[] ans = findShortestPath(results,start,d);
 			int pathMin = (int) ans[0];
 			@SuppressWarnings("unchecked")
 			ArrayList<Integer> path = (ArrayList<Integer>) ans[1];
@@ -118,11 +99,16 @@ public class Johnson_APSP {
 			}
 		}
 		System.out.println(" SSSP = "+pathMinAll);
+		System.out.println(" path Size: "+pathEnd.size());
 		System.out.println(" path : ");
 		for (int i=0;i<pathEnd.size();i++) {
 			System.out.print(" "+pathEnd.get(i));
 		}
 		System.out.println(" End");
+	}
+	private static int getPath(int u) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	private static void setMap() throws IOException {
 		// TODO Auto-generated method stub
@@ -225,6 +211,14 @@ public class Johnson_APSP {
 			path.clear();
 			if (to==s) continue;
 			
+			if (dist[to]==Integer.MAX_VALUE) {
+				length = Integer.MAX_VALUE;
+			}else {
+				length = dist[to]-p[s]+p[to];
+			}
+			
+//			System.out.println(" length = "+length);
+//			System.out.println(s+"-"+to+"= "+length+" p_u "+p[s]+" p_v "+p[to]);
 			Index = prev[to];
 //			System.out.print(" to:"+to+" path:"+Index);
 			if (Index==0) {
@@ -236,11 +230,10 @@ public class Johnson_APSP {
 				Index = prev[Index];
 //				System.out.print(" "+Index);
 			}
-			length = dist[to]-p[s]+p[to];
-			
-//			System.out.println(" length = "+length);
+
 			if (pathMin>length) {
 				pathMin=length;
+//				System.out.println(s+"-"+to+"="+length+"p_u"+p[s]+"p_v"+p[to]);
 				pathEnd.clear();
 				pathEnd.add(s);
 				for (int i=path.size()-1;i>=0;i--) {
