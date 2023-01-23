@@ -248,4 +248,5 @@ public class Johnson_APSP {
 		return ans;
 	}
 }
-//https://www.youtube.com/watch?v=pSqmAO-m7Lk
+//Bellmanford 	: 	https://www.youtube.com/watch?v=pSqmAO-m7Lk
+//John 			:	https://www.youtube.com/watch?v=hl3cgWwJS7I
