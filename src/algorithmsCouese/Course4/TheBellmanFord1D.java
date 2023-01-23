@@ -21,14 +21,14 @@ public class TheBellmanFord1D {
 		
 		//Run BellmanFord
 		for(int i=0;i<ilen;i++) {
-			System.out.println(" i:"+i);
+//			System.out.println(" i:"+i);
 			for ( edge edge : graph ) {
 				int u = edge.start;
 				int v = edge.end;
 				int du = d[u];
 				int dv = d[v];
 				int Wuv = edge.cost;
-				System.out.println("u:"+u+" v:"+v+" du:"+du+" dv:"+dv+" Wuv:"+Wuv);
+//				System.out.println("u:"+u+" v:"+v+" du:"+du+" dv:"+dv+" Wuv:"+Wuv);
 				if ( dv > (du+Wuv)){
 					if (du==Integer.MAX_VALUE) {
 						continue;
