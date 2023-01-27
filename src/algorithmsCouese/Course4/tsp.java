@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 public class tsp {
 	
@@ -58,141 +59,97 @@ public class tsp {
 		}
 	} 
 	
-//	private static File file = new File("src/algorithmsCouese/Course4/tsp.txt");
-//	private static File file = new File("src/algorithmsCouese/Course4/input_float_20_6.txt");
-	private static File file = new File("src/algorithmsCouese/Course4/input_int_20_6.txt");
+	private static File file = new File("src/algorithmsCouese/Course4/tsp.txt");
+//	private static File file = new File("src/algorithmsCouese/Course4/input_float_81_22.txt");
+//	private static File file = new File("src/algorithmsCouese/Course4/input_int_90_24.txt");
+//	private static File file = new File("src/algorithmsCouese/Course4/testCase1.txt");
 	private static Double[][] A;
 	//Cluster
-	private static HashMap<Integer,Set<Integer>> clusters = new HashMap<Integer,Set<Integer>>();
-	private static HashMap<Integer,Integer> nodeParent = new HashMap<Integer,Integer>();
-	private static PriorityQueue<edgeCost> edgeCosts = new PriorityQueue<edgeCost>(500,new costComparator());
 	private static ArrayList<nodeXY> nodesOri = new ArrayList<>();
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 //		N = getSize();
-		initialCluster();
+		initialNodes();
 		
-		//do cluster
-		while(clusters.size()>21) {
-			edgeCost minCost = edgeCosts.poll();
-			mergeCluster(minCost);
-		}
-		//set map for bitMask
-		ArrayList<nodeXY> nodes = new ArrayList<>();
-		HashMap<Integer,Integer> bitMaps = new HashMap<>();
+		// split map 
+		int[] group1 = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13};
+		ArrayList<nodeXY> nodes1 = new ArrayList<>();
+		HashMap<Integer,Integer> bitMaps1 = new HashMap<>();
 		int k = 1;
-		for(Integer key:clusters.keySet()) {
-			bitMaps.put(k, key);
-			nodes.add(nodesOri.get(key-1));
+		for(int index=0;index<group1.length;index++) {
+			int key = group1[index];
+			bitMaps1.put(k, key);
+			nodes1.add(nodesOri.get(key-1));
 			k++;
 		}
-		
-		ArrayList<Integer> tourOri = TSP(nodes);
-		ArrayList<Integer> tourOriNew = nodeName(tourOri,bitMaps);
-		HashMap<Integer,nodeNeighbor> neiOri = setNeighbor(tourOriNew);
-		
-		ArrayList<Integer> tourFinal = new ArrayList<Integer>();
-		
-		for (int i=0; i<tourOriNew.size(); i++) {
-			int city = tourOriNew.get(i);
-			if (!clusters.containsKey(city)) continue;
-			
-			Set<Integer> childs = clusters.get(city);
-			
-			int N = childs.size();
-			if (N==1) {
-				tourFinal.add(city);
-			}else {
-//				for (Integer node : childs) {
-//					tourFinal.add(node);
-//				}
-				
-				ArrayList<Integer> keys = new ArrayList<>();
-				int precity = neiOri.get(city).previous;
-				int precity2nd = neiOri.get(precity).previous;
-				int nextcity = neiOri.get(city).next;
-				int nextcity2nd = neiOri.get(nextcity).next;
-				keys.add(precity2nd);
-				keys.add(precity);
-//				keys.add(city);
-				for(Integer key : childs) {
-					keys.add(key);
-				}
-				keys.add(nextcity);
-				keys.add(nextcity2nd);
-				
-				ArrayList<nodeXY> subnode = new ArrayList<>();
-				HashMap<Integer,Integer> bitMaps2 = new HashMap<>();
-				
-				int kk = 1;
-				for(Integer key : keys) {
-					bitMaps2.put(kk, key);
-					subnode.add(nodesOri.get(key-1));
-					kk++;
-				}
-				
-				ArrayList<Integer> tourS2nd = TSP(subnode);
-				ArrayList<Integer> tourS2ndNew = nodeName(tourS2nd,bitMaps2);
-				
-				int preIndex = tourS2ndNew.indexOf(precity);
-				int nextIndex = tourS2ndNew.indexOf(nextcity);
-				
-				if (preIndex > nextIndex) {
-					Collections.reverse(tourS2ndNew);
-					for (int node:tourS2ndNew) {
-						if (childs.contains(node))
-							tourFinal.add(node);
-					}
-				}else {
-					for (int node:tourS2ndNew) {
-						if (childs.contains(node))
-							tourFinal.add(node);
-					}
-				}
-			}
-		}
-
-		double disAll = getPath(tourFinal.get(0),tourFinal.get(tourFinal.size()-1), nodesOri);
-		for (int i=0;i<tourFinal.size()-1;i++) {
-			int node1 = tourFinal.get(i);
-			int node2 = tourFinal.get(i+1);
-			double dis = getPath(node1,node2,nodesOri);
-			disAll = disAll + dis;
-		}
-		System.out.println("disAll: "+disAll);
-		
-		System.out.print("path : ");
-		for (int node: tourFinal) {
+		ArrayList<Integer> tour1 = TSP(nodes1);
+		ArrayList<Integer> tour1Reset = nodeName(tour1,bitMaps1);
+		for (int node: tour1Reset) {
 			System.out.print(" "+node);
 		}
+		double dis1 = getPath(tour1Reset.get(0),tour1Reset.get(tour1Reset.size()-1), nodesOri);
+		for (int i=0;i<tour1Reset.size()-1;i++) {
+			int node1 = tour1Reset.get(i);
+			int node2 = tour1Reset.get(i+1);
+			double dis = getPath(node1,node2,nodesOri);
+			dis1 = dis1 + dis;
+		}
+		System.out.println("	dis_2: "+dis1);
+		
+		System.out.println("");
+		int[] group2 = new int[]{12,13,14,15,16,17,18,19,20,21,22,23,24,25};
+		ArrayList<nodeXY> nodes2 = new ArrayList<>();
+		HashMap<Integer,Integer> bitMaps2 = new HashMap<>();
+		k = 1;
+		for(int index=0;index<group2.length;index++) {
+			int key = group2[index];;
+			bitMaps2.put(k, key);
+			nodes2.add(nodesOri.get(key-1));
+			k++;
+		}
+		ArrayList<Integer> tour2 = TSP(nodes2);
+		ArrayList<Integer> tour2Reset = nodeName(tour2,bitMaps2);
+		for (int node: tour2Reset) {
+			System.out.print(" "+node);
+		}
+		double dis2 = getPath(tour2Reset.get(0),tour2Reset.get(tour2Reset.size()-1), nodesOri);
+		for (int i=0;i<tour2Reset.size()-1;i++) {
+			int node1 = tour2Reset.get(i);
+			int node2 = tour2Reset.get(i+1);
+			double dis = getPath(node1,node2,nodesOri);
+			dis2 = dis2 + dis;
+		}
+		System.out.println("	dis_2: "+dis2);
+		
+		double dulpicateDis = getPath(12,13,nodesOri);
+		double finalDis = dis1+dis2-2*dulpicateDis;
+		System.out.println("");
 
+		System.out.println(" finalDis: "+finalDis);
 		System.out.println(" End");
 	}
 
-	private static HashMap<Integer, nodeNeighbor> setNeighbor(ArrayList<Integer> tourOriNew) {
-	// TODO Auto-generated method stub
-		HashMap<Integer, nodeNeighbor> neighbors = new HashMap<>();
-		for (int i=0;i<tourOriNew.size();i++) {
-			if (i==tourOriNew.size()-1){
-				int previous = tourOriNew.get(i-1);
-				int next = tourOriNew.get(0);
-				nodeNeighbor nei = new nodeNeighbor(previous,next);
-				neighbors.put(tourOriNew.get(i), nei);
-			}else if (i==0){
-				int previous = tourOriNew.get(tourOriNew.size()-1);
-				int next = tourOriNew.get(i+1);
-				nodeNeighbor nei = new nodeNeighbor(previous,next);
-				neighbors.put(tourOriNew.get(i), nei);
-			}else {
-				int previous = tourOriNew.get(i-1);
-				int next = tourOriNew.get(i+1);
-				nodeNeighbor nei = new nodeNeighbor(previous,next);
-				neighbors.put(tourOriNew.get(i), nei);
+	private static ArrayList<Integer> insertNode(int city, ArrayList<Integer> tourOriNew, ArrayList<nodeXY> nodes) {
+		// TODO Auto-generated method stub
+		int index1 = 0;
+		int index2 = 0;
+		double minDis = Double.MAX_VALUE;
+		for (int i=0 ;i< tourOriNew.size();i++) {
+			double dis = getPath(city,tourOriNew.get(i), nodes);
+			if( minDis > dis) {
+				minDis = dis;
+				index1 = i;
+				index2 = index1;
 			}
 		}
-	return neighbors;
-}
+		if (index1 > index2) {
+			tourOriNew.add(index2, city);
+		}else {
+			tourOriNew.add(index1, city);
+		}
+		return tourOriNew;
+	}
 
 	private static ArrayList<Integer> nodeName(ArrayList<Integer> tours1, HashMap<Integer, Integer> bitMaps2) {
 		ArrayList<Integer> tourNew = new ArrayList<>();
@@ -214,24 +171,30 @@ public class tsp {
 		//for loop for subproblem
 		for (int m=2;m<=N;m++) {
 			//get S include 1,with size m
-			HashSet<Integer> bitMasks = new HashSet<Integer>() ;
+			PriorityQueue<Integer> bitMasks = new PriorityQueue<Integer>() ;
+			PriorityQueue<Integer> bitMasksDebug = new PriorityQueue<Integer>() ;
 			bitMasks = getSet(m,N);
-//			System.out.println("get SebSet of M"+m);
+			bitMasksDebug = getSet(m,N);
+//			System.out.println("get SebSet of M = "+m);
 //			System.out.println("subSet size "+bitMasks.size());
-//			for (int sub : bitMasks) {
-//				System.out.println(" "+Integer.toBinaryString(sub));
+//			for (int i=0;i<bitMasks.size();i++) {
+//				int sub = bitMasksDebug.poll();
+//				System.out.println(""+Integer.toBinaryString(sub)+"	"+sub);
 //			}
 			//for each set 1...n , set.contain(j) ,j != 1
-			for (int S : bitMasks) {
-				String Sstr = Integer.toBinaryString(S);
-//				System.out.println("sub: "+Sstr);
+			while (!bitMasks.isEmpty()) {
+				int S = bitMasks.poll();
+				String Sstr = reverseString(Integer.toBinaryString(S));
+//				System.out.println("S***"+Sstr+"***");
 		        for (int i = 1; i < Sstr.length(); i++) {
 		        	char str1 = '1';
 		        	if (Sstr.charAt(i) == str1) {
 		        		int j = i+1;
+//		        		System.out.println("[j]= "+j);
 		        		A[S][j] = setA2D(S,j, nodes);
 //		        		if (N==4) {
-//		        			System.out.println("J: "+j+"value: "+A[S][j]);
+//	        			System.out.println("A[S]["+j+"]"+A[S][j]);
+//	        			System.out.println("");
 //		        		}
 		        	}
 		        }
@@ -254,9 +217,9 @@ public class tsp {
 				if (!tour.contains(j)) {
 					double value = A[tmpS][j]+getPath(j,tmpk, nodes);
 //					System.out.println("J: "+j+" value "+value);
-					if (N==4) {
-						System.out.println("J: "+j+" value "+value);
-					}
+//					if (N==4) {
+//						System.out.println("J: "+j+" value "+value);
+//					}
 					if (minPath > value) {
 						tmpJ = j;
 						minPath = value;
@@ -264,19 +227,11 @@ public class tsp {
 				}
 			}
 			int jvalue = 1 << tmpJ-1;
-			if (N==4) {
-				System.out.println("tmpS:"+Integer.toBinaryString(tmpS)+"="+tmpS);
-				System.out.println("tmpJ:"+Integer.toBinaryString(1 << tmpJ-1)+"="+jvalue);
-			}
-//			System.out.println("tmpS:"+Integer.toBinaryString(tmpS));
-//			System.out.println("tmpS:"+Integer.toBinaryString(1 << tmpJ-1));
+//			System.out.println("tmpS:"+Integer.toBinaryString(tmpS)+"="+tmpS);
+//			System.out.println("tmpJ:"+Integer.toBinaryString(1 << tmpJ-1)+"="+jvalue);
 			tmpS = tmpS - jvalue;
-			if (N==4) {
-				System.out.println("tmpS:"+Integer.toBinaryString(tmpS)+"="+tmpS);
-			}
-//			System.out.println("tmpS:"+Integer.toBinaryString(tmpS));
+//			System.out.println("tmpS:"+Integer.toBinaryString(tmpS)+"="+tmpS);
 			tmpk = tmpJ;
-			
 			tour.add(tmpJ);
 		}		
 		
@@ -286,18 +241,25 @@ public class tsp {
 	private static Double setA2D(int S, int j, ArrayList<nodeXY> nodes) {
 		// TODO Auto-generated method stub
 		int S_j = S - (1 << j-1);
-		String Sstr = Integer.toBinaryString(S);
+		int J = (1 << j-1);
+		String SstrDebug = Integer.toBinaryString(S);
+		String Jstr = Integer.toBinaryString(J);
 //		String SJstr = Integer.toBinaryString(S_j);
-//		System.out.println(Sstr);
-//		System.out.println(SJstr);
+//		System.out.println("S  : "+SstrDebug);
+//		System.out.println("J  : "+Jstr);
+//		System.out.println("S-J: "+SJstr);
 		Double minValue = Double.MAX_VALUE;
+		String Sstr = reverseString(Integer.toBinaryString(S));
         for (int i = 0; i < Sstr.length(); i++) {
         	char str1 = '1';
         	if (Sstr.charAt(i) == str1) {
         		int k = i+1;
         		if (k!=j) {
+//        			String kstr = Integer.toBinaryString(1 << k-1);
+//        			System.out.println("K  : "+kstr);
         			if (A[S_j][k] == Double.MAX_VALUE) continue;
         			Double value = A[S_j][k]+getPath(j,k, nodes);
+//        			System.out.println(" value: "+value);
         			if (minValue > value) {
         				minValue = value;
         			}
@@ -321,18 +283,17 @@ public class tsp {
 		return cost;
 	}
 
-	private static HashSet<Integer> getSet(int m, int n) {
+	private static PriorityQueue<Integer> getSet(int m, int n) {
 		// TODO Auto-generated method stub
-//		HashSet<Integer> bitMasks = new HashSet<Integer>();
 		int b = 1;
 		int name = 0;
-		HashSet<Integer> bitMasks = new HashSet<Integer>();
+		PriorityQueue<Integer> bitMasks = new PriorityQueue<Integer>();
 		
 		bitMasks = generatebitMasks(1,b,m,name,bitMasks,n);
 		
 		return bitMasks;
 	}
-	private static HashSet<Integer> generatebitMasks(int i, int b, int m, int name,HashSet<Integer> bitMasks, int n) {
+	private static PriorityQueue<Integer> generatebitMasks(int i, int b, int m, int name,PriorityQueue<Integer> bitMasks, int n) {
 		// TODO Auto-generated method stub
 		int N = n;
 		if (name <= m-1) {
@@ -350,35 +311,8 @@ public class tsp {
 		}
 		return bitMasks;
 	}
-	private static void mergeCluster(edgeCost minCost) {
-		// merge and clean cluster
-		System.out.println("merge node1: "+minCost.node1+" and node2: "+minCost.node2+" Cost : "+minCost.cost);
-		
-		int node1 = nodeParent.get(minCost.node1);
-		int node2 = nodeParent.get(minCost.node2);
-		
-		System.out.println("merge New node1: "+node1+" and New node2: "+node2);
-		Set<Integer> nodes1 = new HashSet<>();
-		nodes1 = clusters.get(node1);
-		Set<Integer> nodes2 = new HashSet<>();
-		nodes2 = clusters.get(node2);
-		nodes1.addAll(nodes2);
-		if (node1<node2) {
-			clusters.remove(node2);
-			clusters.put(node1, nodes1);
-			for(int node : nodes1) {
-				nodeParent.put(node,node1);
-			}
-		}else {
-			clusters.remove(node1);
-			clusters.put(node2, nodes1);
-			for(int node : nodes1) {
-				nodeParent.put(node,node2);
-			}
-		}
-	}
 	
-	private static void initialCluster() throws IOException {
+	private static void initialNodes() throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader input = new BufferedReader(new FileReader(file));
 		try {
@@ -396,31 +330,6 @@ public class tsp {
 				double x = Double.valueOf(xcor);
 				double y = Double.valueOf(ycor);
 				
-//				edgeCosts
-				for (nodeXY no : nodesOri) {
-//					System.out.println("n1: "+no.name+" n2: "+name);
-					double dis_X = (no.x - x)*(no.x - x);
-					double dis_Y = (no.y - y)*(no.y - y);
-					double cost = Math.sqrt(dis_X+dis_Y);
-					edgeCost edge0 = new edgeCost(cost,no.name,name);
-					edgeCosts.add(edge0);
-					
-					int node1 = no.name;
-					int node2 = name;
-					if (!clusters.containsKey(node1)) {
-						Set<Integer> clusterEdges = new HashSet<Integer>();
-						clusterEdges.add(node1);
-						clusters.put(node1, clusterEdges);
-						nodeParent.put(node1, node1);
-					}
-					if (!clusters.containsKey(node2)) {
-						Set<Integer> clusterEdges = new HashSet<Integer>();
-						clusterEdges.add(node2);
-						clusters.put(node2, clusterEdges);
-						nodeParent.put(node2, node2);
-					}
-				}
-				
 				nodeXY node = new nodeXY(name,x,y);
 				
 				nodesOri.add(node);
@@ -432,6 +341,10 @@ public class tsp {
 		finally {
 			input.close();
 		} // finally
-	
 	}
+	public static String reverseString(String str){  
+	    StringBuilder sb=new StringBuilder(str);  
+	    sb.reverse();  
+	    return sb.toString();  
+	}  
 }
