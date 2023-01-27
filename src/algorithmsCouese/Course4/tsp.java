@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,12 +49,18 @@ public class tsp {
 			this.y=y;
 		}
 	} 
+	public static class nodeNeighbor {
+		public int previous;
+		public int next;
+		public nodeNeighbor(int previous,int next) {
+			this.previous=previous;
+			this.next=next;
+		}
+	} 
 	
 //	private static File file = new File("src/algorithmsCouese/Course4/tsp.txt");
-//	private static File file = new File("src/algorithmsCouese/Course4/input_float_10_4.txt");
-	private static File file = new File("src/algorithmsCouese/Course4/input_int_10_4.txt");
-//	private static HashSet<Integer> bitMasks = new HashSet<Integer>();
-//	private static HashMap<Integer,Integer> bitMaps = new HashMap<>();
+//	private static File file = new File("src/algorithmsCouese/Course4/input_float_20_6.txt");
+	private static File file = new File("src/algorithmsCouese/Course4/input_int_20_6.txt");
 	private static Double[][] A;
 	//Cluster
 	private static HashMap<Integer,Set<Integer>> clusters = new HashMap<Integer,Set<Integer>>();
@@ -81,56 +88,76 @@ public class tsp {
 			k++;
 		}
 		
-		ArrayList<Integer> tour1 = TSP(nodes);
-		ArrayList<Integer> tour1New = nodeName(tour1,bitMaps);
+		ArrayList<Integer> tourOri = TSP(nodes);
+		ArrayList<Integer> tourOriNew = nodeName(tourOri,bitMaps);
+		HashMap<Integer,nodeNeighbor> neiOri = setNeighbor(tourOriNew);
+		
 		ArrayList<Integer> tourFinal = new ArrayList<Integer>();
 		
-		for (int i=0; i<tour1New.size(); i++) {
-			int node0 = tour1New.get(i);
-			if (!clusters.containsKey(node0)) continue;
+		for (int i=0; i<tourOriNew.size(); i++) {
+			int city = tourOriNew.get(i);
+			if (!clusters.containsKey(city)) continue;
 			
-			Set<Integer> childs = clusters.get(node0);
+			Set<Integer> childs = clusters.get(city);
 			
 			int N = childs.size();
 			if (N==1) {
-				tourFinal.add(node0);
+				tourFinal.add(city);
 			}else {
-				for (Integer node : childs) {
-					tourFinal.add(node);
-				}
-//				int preKey = tour1New.get(i-1);
-//				int nextKey = tour1New.get(i+1);
-				
-//				ArrayList<nodeXY> nodes2 = new ArrayList<>();
-//				HashMap<Integer,Integer> bitMaps2 = new HashMap<>();
-//				
-//				int kk = 1;
-//				bitMaps2.put(kk, preKey);
-//				nodes2.add(nodesOri.get(preKey-1));
-//				kk++;
-//				for(Integer key : childs) {
-//					bitMaps2.put(kk, key);
-//					nodes2.add(nodesOri.get(key-1));
-//					kk++;
-//				}
-//				bitMaps2.put(kk, nextKey);
-//				nodes2.add(nodesOri.get(nextKey-1));
-//				
-//				ArrayList<Integer> tour2 = TSP(nodes2);
-//				ArrayList<Integer> tour2New = nodeName(tour2,bitMaps2);
-//				tour2New.remove(0);
-//				tour2New.remove(tour2New.size()-1);
-//				for (int node:tour2New) {
+//				for (Integer node : childs) {
 //					tourFinal.add(node);
 //				}
+				
+				ArrayList<Integer> keys = new ArrayList<>();
+				int precity = neiOri.get(city).previous;
+				int precity2nd = neiOri.get(precity).previous;
+				int nextcity = neiOri.get(city).next;
+				int nextcity2nd = neiOri.get(nextcity).next;
+				keys.add(precity2nd);
+				keys.add(precity);
+//				keys.add(city);
+				for(Integer key : childs) {
+					keys.add(key);
+				}
+				keys.add(nextcity);
+				keys.add(nextcity2nd);
+				
+				ArrayList<nodeXY> subnode = new ArrayList<>();
+				HashMap<Integer,Integer> bitMaps2 = new HashMap<>();
+				
+				int kk = 1;
+				for(Integer key : keys) {
+					bitMaps2.put(kk, key);
+					subnode.add(nodesOri.get(key-1));
+					kk++;
+				}
+				
+				ArrayList<Integer> tourS2nd = TSP(subnode);
+				ArrayList<Integer> tourS2ndNew = nodeName(tourS2nd,bitMaps2);
+				
+				int preIndex = tourS2ndNew.indexOf(precity);
+				int nextIndex = tourS2ndNew.indexOf(nextcity);
+				
+				if (preIndex > nextIndex) {
+					Collections.reverse(tourS2ndNew);
+					for (int node:tourS2ndNew) {
+						if (childs.contains(node))
+							tourFinal.add(node);
+					}
+				}else {
+					for (int node:tourS2ndNew) {
+						if (childs.contains(node))
+							tourFinal.add(node);
+					}
+				}
 			}
 		}
 
-		double disAll = getPath(tourFinal.get(0),tourFinal.get(tourFinal.size()-1), nodes);
+		double disAll = getPath(tourFinal.get(0),tourFinal.get(tourFinal.size()-1), nodesOri);
 		for (int i=0;i<tourFinal.size()-1;i++) {
 			int node1 = tourFinal.get(i);
 			int node2 = tourFinal.get(i+1);
-			double dis = getPath(node1,node2,nodes);
+			double dis = getPath(node1,node2,nodesOri);
 			disAll = disAll + dis;
 		}
 		System.out.println("disAll: "+disAll);
@@ -142,6 +169,30 @@ public class tsp {
 
 		System.out.println(" End");
 	}
+
+	private static HashMap<Integer, nodeNeighbor> setNeighbor(ArrayList<Integer> tourOriNew) {
+	// TODO Auto-generated method stub
+		HashMap<Integer, nodeNeighbor> neighbors = new HashMap<>();
+		for (int i=0;i<tourOriNew.size();i++) {
+			if (i==tourOriNew.size()-1){
+				int previous = tourOriNew.get(i-1);
+				int next = tourOriNew.get(0);
+				nodeNeighbor nei = new nodeNeighbor(previous,next);
+				neighbors.put(tourOriNew.get(i), nei);
+			}else if (i==0){
+				int previous = tourOriNew.get(tourOriNew.size()-1);
+				int next = tourOriNew.get(i+1);
+				nodeNeighbor nei = new nodeNeighbor(previous,next);
+				neighbors.put(tourOriNew.get(i), nei);
+			}else {
+				int previous = tourOriNew.get(i-1);
+				int next = tourOriNew.get(i+1);
+				nodeNeighbor nei = new nodeNeighbor(previous,next);
+				neighbors.put(tourOriNew.get(i), nei);
+			}
+		}
+	return neighbors;
+}
 
 	private static ArrayList<Integer> nodeName(ArrayList<Integer> tours1, HashMap<Integer, Integer> bitMaps2) {
 		ArrayList<Integer> tourNew = new ArrayList<>();
