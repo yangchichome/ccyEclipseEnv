@@ -28,17 +28,17 @@ public class TSP {
 		}
 	} 
 	
-	private static class costComparator implements Comparator<edgeCost>{
-		
-		public int compare (edgeCost node1,edgeCost node2) {
-			if (node1.cost > node2.cost)
-				return 1;
-			else if (node1.cost < node2.cost)
-				return -1;
-			
-			return 0;
-		}
-	}
+//	private static class costComparator implements Comparator<edgeCost>{
+//		
+//		public int compare (edgeCost node1,edgeCost node2) {
+//			if (node1.cost > node2.cost)
+//				return 1;
+//			else if (node1.cost < node2.cost)
+//				return -1;
+//			
+//			return 0;
+//		}
+//	}
 	
 	public static class nodeXY {
 		public int name;
