@@ -15,7 +15,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-public class tsp {
+public class TSP {
 	
 	public static class edgeCost {
 		public double cost;
