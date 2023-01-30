@@ -35,12 +35,17 @@ public class Kosaraju_iterative_Pass {
 		setExp(nodes);
 		
 		//Loop G 
+		// edgesStacks started with 1 node, and keep added node until no path can go. 
 		while (!edgesStacks.empty()) {
 			int k = edgesStacks.pop();
 			if (explored.get(k) == false) {
+				
+				//push to explored and backStack for go back
 				backStacks.push(k);
 				explored.put(k, true);
+				//check if meet with Loop
 				setnodeOrder();
+				
 				System.out.println("DFS1 :"+k);
 				graphInfo graphTmp2 = new graphInfo();
 				graphTmp2 = graphAll.getOrDefault(k, graphTmp2);
