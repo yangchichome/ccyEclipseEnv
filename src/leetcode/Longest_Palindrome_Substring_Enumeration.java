@@ -1,6 +1,6 @@
 package leetcode;
 
-public class Longest_Palindrome__Substring_Enumeration {
+public class Longest_Palindrome_Substring_Enumeration {
     /**
      * @param s: input string
      * @return: a string as the longest palindromic substring
