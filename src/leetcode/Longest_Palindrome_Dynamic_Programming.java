@@ -1,4 +1,4 @@
-package leedcode;
+package leetcode;
 
 public class Longest_Palindrome_Dynamic_Programming {
     /**
