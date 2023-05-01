@@ -5,32 +5,35 @@ public class leet5 {
 }
 class Solution {
     public String longestPalindrome(String s) {
-        if (s.length() <= 1) return s;
-        int len = s.length();
-        int lenmax = 0;
-        int start = 0;
         
-        for (int i=0; i<len; i++){
-            int lencur = Math.max(getlen(s, i, i), getlen(s, i, i+1));
+        if (s == null || s.length() == 0) return "";
+        if (s.length() == 1) return s;
 
-            if (lencur > lenmax){
-                lenmax = lencur;
-                start = i - (lencur - 1)/2;
-            }
+        int n = s.length();
+        int maxlen = 0;
+        int start = 0;
+        for (int i=0; i<n-1; i++){
+            
+            int temp = Math.max(getlen(s, i, i), getlen(s, i, i+1));
+            if (temp > maxlen) {
+                maxlen = temp;
+                start = i - (temp-1)/2;
+            };
         }
-
-        return s.substring(start, start + lenmax);
+        return s.substring(start, start + maxlen);
     }
 
-    private int getlen(String s, int start, int end){
-        while(start >= 0 && end < s.length()){
-            if (s.charAt(start) == s.charAt(end)){
-                start--;
-                end++;
-            } else{
+    public int getlen(String s, int i, int j){
+
+        while (i >=0 && j < s.length()){
+            if (s.charAt(i) == s.charAt(j)){
+                i--;
+                j++;
+            }else{
                 break;
             }
         }
-        return end - start - 1;
+
+        return j - i - 1 ;
     }
 }
