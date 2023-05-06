@@ -5,20 +5,22 @@ public class Leet69 {
 }
 class Solution {
     public int mySqrt(int x) {
-        if (x < 0) return -1;
-        else if( x <= 1) return x;
+        if (x <= 1) return x;
 
-        int start = 1;
-        int end = x;
+        int s = 1;
+        int e = x;
 
-        while (start+1 < end){
-            int mid = end + (start - end)/2;
-            if (mid == x/mid) return mid;
-            else if (mid > x/mid) end = mid;
-            else start = mid;
+        while (s+1 < e) {
+            int m = s + (e-s)/2;
+            if (m > x/m) {
+                e = m;
+            }else {
+                s = m;
+            }
         }
 
-        if (end > x/end) return start;
-        else return end; 
+        if (e > x/e) return s;
+        else return e;
+
     }
 }

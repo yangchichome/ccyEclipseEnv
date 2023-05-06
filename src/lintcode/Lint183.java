@@ -11,33 +11,38 @@ public class Solution {
      */
     public int woodCut(int[] l, int k) {
         // write your code here
-        int start = 1;
-        int end = 0;
-        for (int s : l){
-            end = Math.max(end,s);
+        // len = 1      , pieces = l.sum;
+        // len = k      , pieces = ?;
+        // len = l.max  , pieces = 1;
+        // len > l.max  , pieces = 0;
+        int maxL = 0;
+        for (int i=0; i< l.length; i++){
+            maxL = Math.max(l[i], maxL);
         }
 
-        int result = 0;
-        while(start <= end ){
-            int mid = end + (start-end)/2;
+        int s = 0;
+        int e = maxL;
 
-            if (count(l,mid) >= k) {
-                result = mid;
-                start = mid+1;
-            }else {
-                end = mid-1;
+        while (s+1 < e){
+            int m = s + (e-s)/2;
+
+            if (isKpossible(l, k, m)) {
+                s = m;
+            }else{
+                e = m;
             }
         }
 
-        return result;
+        return isKpossible(l, k, e)? e : s;
     }
 
-    public int count(int[] lens, int len){
-        int count = 0;
-        for (int wlen : lens){
-            count += wlen/len;
+    public boolean isKpossible(int[] w,int k, int len) {
+        int pieces = 0;
+
+        for (int i=0; i<w.length; i++){
+            pieces += w[i]/len;
         }
 
-        return count;
-    }
+        return pieces >= k ? true : false;
+    } 
 }
