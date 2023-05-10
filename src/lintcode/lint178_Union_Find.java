@@ -26,6 +26,7 @@ public class Solution {
 
             int temp = -1;
             int fa = father.get(x);
+            father.put(x, f);
             while(fa != father.get(fa)){
                 temp = father.get(fa);
                 father.put(fa, f);
