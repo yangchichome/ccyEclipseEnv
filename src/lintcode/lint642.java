@@ -1,9 +1,11 @@
 package lintcode;
 
-public class Lint642 {
+public class lint642 {
 
+}
+public class MovingAverage {
     private Queue<Integer> queue;
-    private double sum = 0;
+    private double sum;
     private int size;
     /*
     * @param size: An integer
@@ -20,10 +22,14 @@ public class Lint642 {
     public double next(int val) {
         // write your code here
         sum += val;
+
         if (queue.size() == size){
-            sum = sum -queue.poll();
+            sum -= queue.poll();
         }
+
         queue.offer(val);
-        return sum /queue.size();
+
+        return sum / queue.size();
+
     }
 }
