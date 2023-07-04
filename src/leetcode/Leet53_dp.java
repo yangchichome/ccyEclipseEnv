@@ -1,6 +1,6 @@
 package leetcode;
 
-public class Leet53 {
+public class Leet53_dp {
 
 }
 class Solution {
