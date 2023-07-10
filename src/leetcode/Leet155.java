@@ -4,7 +4,6 @@ public class Leet155 {
 
 }
 class MinStack {
-
     private Stack<Integer> stack;
     private Stack<Integer> minstack;
 
@@ -15,16 +14,15 @@ class MinStack {
     
     public void push(int val) {
         stack.push(val);
-        if (minstack.empty() == true){
+        if (minstack.isEmpty()){
             minstack.push(val);
-        } else if (minstack.peek() >= val){
-            minstack.push(val);
+        }else{
+            minstack.push(Math.min(val, minstack.peek()));
         }
     }
     
     public void pop() {
-        if (stack.peek().equals(minstack.peek()))
-            minstack.pop();
+        minstack.pop();   
         stack.pop();
     }
     
@@ -37,6 +35,14 @@ class MinStack {
     }
 }
 
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(val);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack obj = new MinStack();
