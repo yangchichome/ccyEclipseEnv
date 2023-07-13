@@ -5,19 +5,20 @@ public class Leet674 {
 }
 class Solution {
     public int findLengthOfLCIS(int[] nums) {
-        if (nums == null || nums.length == 0) return 0;
-
         int n = nums.length;
-        int length = 1;
+        if (n <= 1) return n;
+
+        int count = 1;
         int maxlen = 1;
-        for (int i=1; i<n; i++){
+        for(int i=1; i<n; i++){
             if (nums[i] > nums[i-1]){
-                length++;
-                maxlen = Math.max(maxlen, length);
+                count++;
             }else{
-                length = 1;
-            } 
+                count = 1;
+            }
+            maxlen = Math.max(maxlen, count);
         }
+
         return maxlen;
     }
 }
