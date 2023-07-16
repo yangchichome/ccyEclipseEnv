@@ -5,44 +5,47 @@ public class leet74 {
 }
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        
-        int s = 0;
-        int e = matrix.length-1;
+        int sizem = matrix.length;
+        int sizen = matrix[0].length;
 
-        while (s+1 < e){
-            int m = s + (e-s)/2;
-            if (matrix[m][0] == target){
-                return true;
-            }else if (matrix[m][0] > target){
-                e = m;
+        int l = 0;
+        int r = sizem-1;
+        while(l+1 < r){
+            int m = l+(r-l)/2;
+            if (matrix[m][0] > target){
+                r = m;
+            }else if (matrix[m][0] < target){
+                l = m;
             }else{
-                s = m;
-            }
-        }
-
-        int i = 0;
-        if (matrix[s][0] == target || matrix[e][0] == target) return true;
-        if (matrix[e][0] < target) {
-            i = e;
-        }else{
-            i = s;
-        }
-      
-        s = 0;
-        e = matrix[0].length-1;
-
-        while (s+1 < e){
-            int m = s + (e-s)/2;
-            if (matrix[i][m] == target) {
                 return true;
-            }else if (matrix[i][m] > target){
-                e = m;
-            }else {
-                s = m;
             }
         }
+        int idxR = 0;
+        if (matrix[r][0] <= target){
+            idxR = r;
+        }else {
+            idxR = l;
+        }
 
-        if (matrix[i][s] == target || matrix[i][e] == target) return true;
+        l = 0;
+        r = sizen-1;
+
+        while(l+1 < r){
+            int m = l+(r-l)/2;
+            if (matrix[idxR][m] > target){
+                r = m;
+            }else if (matrix[idxR][m] < target){
+                l = m;
+            }else{
+                return true;
+            }
+        } 
+
+        if (matrix[idxR][l] == target){
+            return true;
+        }else if (matrix[idxR][r] == target){
+            return true;
+        }
 
         return false;
     }

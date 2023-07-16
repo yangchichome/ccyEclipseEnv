@@ -11,38 +11,39 @@ public class Solution {
      */
     public int woodCut(int[] l, int k) {
         // write your code here
-        // len = 1      , pieces = l.sum;
-        // len = k      , pieces = ?;
-        // len = l.max  , pieces = 1;
-        // len > l.max  , pieces = 0;
-        int maxL = 0;
-        for (int i=0; i< l.length; i++){
-            maxL = Math.max(l[i], maxL);
+        if (l == null || l.length == 0) return 0;
+        // len max.L[]  --> 1 P
+        // len 114      --> 7 p
+        // len ?        --> k p
+        // len 1        --> Sum.L[] p
+        // getPieces(int len)
+
+        long s = 0;
+        long e = 0;
+        for(int w:l){
+            e += w;
         }
 
-        int s = 0;
-        int e = maxL;
-
-        while (s+1 < e){
-            int m = s + (e-s)/2;
-
-            if (isKpossible(l, k, m)) {
+        while(s+1 < e){
+            long m = s +(e-s)/2;
+            long pieces = getPieces(l, m);
+            // System.out.println("s:"+s+", e:"+e+", m:"+m+", p"+pieces);
+            if (pieces >= k){
                 s = m;
-            }else{
+            }else if (pieces < k){
                 e = m;
             }
         }
+        return (int)s;
 
-        return isKpossible(l, k, e)? e : s;
     }
 
-    public boolean isKpossible(int[] w,int k, int len) {
-        int pieces = 0;
-
-        for (int i=0; i<w.length; i++){
-            pieces += w[i]/len;
+    private long getPieces(int[] woods, long lenFinal){
+        long pieces = 0;
+        for(int woodLen: woods){
+            pieces += woodLen/lenFinal;
         }
 
-        return pieces >= k ? true : false;
-    } 
+        return pieces;
+    }
 }
