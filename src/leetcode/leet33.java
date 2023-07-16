@@ -5,35 +5,36 @@ public class leet33 {
 }
 class Solution {
     public int search(int[] nums, int target) {
-        if (nums == null || nums.length == 0) return -1;
+        
+        int l = 0;
+        int r = nums.length-1;
 
-        int n = nums.length;
-        int s = 0;
-        int e = n-1;
-
-        while (s+1 < e){
-            int m = s + (e-s)/2;
-            if (nums[m] > nums[e]) {
-                if (nums[m] >= target && target >= nums[s]) {
-                    e = m;
+        while(l+1 < r){
+            int mid = l + (r-l)/2;
+            if (nums[mid] == target) return mid;
+            // System.out.println("mid:"+ mid+" ,l:"+l+" ,r: "+r);
+            // System.out.println("nums[mid]"+nums[mid]+" ,nums[l]:"+nums[l]+" ,nums[r]"+nums[r]+" ,target:"+target);
+            if (nums[mid] < nums[r]){
+                if (target <= nums[r] && target >= nums[mid]){
+                    // System.out.println("case1");
+                    l = mid;
                 }else{
-                    s = m;
+                    // System.out.println("case2");
+                    r = mid;
                 }
             }else{
-                if (nums[m] <= target && target <= nums[e]){
-                    s = m;
+                if (target >= nums[l] && target <= nums[mid]){
+                    // System.out.println("case3");
+                    r = mid;
                 }else{
-                    e = m;
+                    // System.out.println("case4");
+                    l = mid;
                 }
             }
         }
+        if (nums[r] == target) return r;
+        if (nums[l] == target) return l;
+        return -1;
 
-        if (nums[s] == target) {
-            return s;
-        }else if (nums[e] == target){
-            return e;
-        }else{
-            return -1;
-        }
     }
 }

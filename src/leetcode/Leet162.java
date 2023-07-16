@@ -5,23 +5,21 @@ public class Leet162 {
 }
 class Solution {
     public int findPeakElement(int[] nums) {
-        if (nums.length == 1) return 0;
+        
+        int l = 0;
+        int r = nums.length-1;
 
-        int n = nums.length;
-        int s = 0;
-        int e = n-1;
-
-        while(s+1 < e){
-            int m = s + (e - s)/2;
-            if (nums[m] < nums[m-1]){
-                e = m;
-            }else if (nums[m] < nums[m+1]){
-                s = m;
+        while (l+1 < r){
+            int mid = l +(r-l)/2;
+            if (nums[mid] < nums[mid+1]){
+                l = mid;
+            }else if (nums[mid] < nums[mid-1]){
+                r = mid;
             }else{
-                return m;
+                return mid;
             }
-        } 
+        }
 
-        return nums[s] > nums[e] ? s : e;
+        return nums[l]<nums[r] ? r : l;
     }
 }

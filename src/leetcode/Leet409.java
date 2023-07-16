@@ -5,18 +5,28 @@ public class Leet409 {
 }
 class Solution {
     public int longestPalindrome(String s) {
-        Set<Character> set = new HashSet<>();
-        for (char c : s.toCharArray()){
-            if (set.contains(c)){
-                set.remove(c);
+        int[] chars = new int[52];
+
+        for(int i=0; i<s.length(); i++){
+            int index = s.charAt(i) - 'a';
+            if (index < 0){
+                index = s.charAt(i) - 'A' + 26;
+            }
+            chars[index]++;
+        }
+
+        int count = 0;
+        boolean isodd = false;
+        for(int c: chars){
+            if (c%2 == 1){
+                isodd = true;
+                count += c-1;
             }else{
-                set.add(c);
+                count += c;
             }
         }
-        int remove = set.size();
-        if (remove > 0){
-            remove--;
-        }
-        return s.length() - remove;
+        
+        return isodd? count+1 : count;
+        
     }
 }
