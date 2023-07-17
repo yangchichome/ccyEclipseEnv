@@ -5,25 +5,27 @@ public class leet611 {
 }
 class Solution {
     public int triangleNumber(int[] nums) {
-        if (nums == null || nums.length < 3 ) return 0;
+        //triangle a+b > c
 
-        int len = nums.length;
         Arrays.sort(nums);
-
         int count = 0;
-        for (int i=len-1; i>=0; i--){
+        int mulc = 0;
+        for(int c=nums.length-1; c>1; c--){
             int s = 0;
-            int e = i-1;
-            while (s < e){
-                if (nums[s]+nums[e] > nums[i]){
-                    count += e-s;
+            int e = c-1;
+            while(s<e){
+
+                int sum = nums[s]+nums[e];
+                if (sum > nums[c]){
+                    
+                    count += e - s;
                     e--;
-                }else {
+                }else{
+                    
                     s++;
                 }
             }
         }
-
         return count;
     }
 }

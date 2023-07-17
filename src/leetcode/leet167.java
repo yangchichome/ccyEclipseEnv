@@ -5,21 +5,19 @@ public class leet167 {
 }
 class Solution {
     public int[] twoSum(int[] numbers, int target) {
-        if (numbers == null || numbers.length < 2) return new int[0];
-
-        int s = 0;
-        int e = numbers.length-1;
-
-        while (s <= e){
-            if (numbers[s]+numbers[e] > target) {
-                e--;
-            }else if (numbers[s]+numbers[e] < target){
-                s++;
+        int left = 0;
+        int right = numbers.length-1;
+        while(left<right){
+            int sum = numbers[left]+numbers[right];
+            if (sum > target){
+                right--;
+            }else if (sum < target){
+                left++;
             }else{
-                return new int[]{s+1, e+1};
+                break;
             }
-        } 
+        }
+        return new int[]{left+1, right+1};
 
-        return new int[0];
     }
 }
