@@ -5,22 +5,17 @@ public class leet16 {
 }
 class Solution {
     public int threeSumClosest(int[] nums, int target) {
-        int len = nums.length;
+        
         Arrays.sort(nums);
-
-        int minDelta = Integer.MAX_VALUE;
-        int minSum = 0;
-        for (int i=0; i<len; i++){
+        int ans = nums[0]+nums[1]+nums[2];
+        for(int i=0; i<nums.length; i++){
             int s = i+1;
-            int e = len-1;
-            while(s < e){
-                int sum = nums[s]+nums[e]+nums[i];
-                int delta = Math.abs(sum - target);
-                if (delta < minDelta){
-                    minSum = sum;
-                    minDelta = delta;
-                }
-
+            int e = nums.length-1;
+            while(s<e){
+                int sum = nums[i] + nums[s] + nums[e];
+                int deltaOld = Math.abs(target - ans);
+                int deltaNew = Math.abs(target - sum);
+                ans = deltaOld < deltaNew? ans : sum; 
                 if (sum > target){
                     e--;
                 }else if (sum < target){
@@ -28,8 +23,8 @@ class Solution {
                 }else{
                     return target;
                 }
-            }
+            }  
         }
-        return minSum;
+        return ans;
     }
 }

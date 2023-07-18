@@ -10,35 +10,24 @@ public class Solution {
      */
     public void pancakeSort(int[] array) {
         // Write your code here
-        if (array == null || array.length == 0) return;
-
-        int n = array.length;
-        for (int i=n-1; i>=0; i--){
-            int max = 0;
-            for (int j=0; j<=i; j++){
-                if (array[j] > array[max]){
-                    max = j;
-                }
-            }
-
-            if (max == 0){
-                flip(array, i);
-            }else {
-                flip(array, max);
-                flip(array, i);
-            }
+        for(int i=array.length-1; i>=0; i--){
+            // printArr(array, i); 
+            int maxi = getMax(array, i+1);
+            // System.out.println("    maxi: "+maxi);
+            FlipTool.flip(array, maxi);
+            FlipTool.flip(array, i);
         }
     }
 
-    private void flip(int[] array, int p){
-        int s = 0;
-        int e = p;
-        while(s < p){
-            int tmp = array[s];
-            array[s] = array[e];
-            array[e] = tmp;
-            s++;
-            e--;
+    private int getMax(int[] nums, int size){
+        int maxi = 0;
+        int max = Integer.MIN_VALUE;
+        for(int i=0; i<size; i++){
+            if(nums[i] > max){
+                max = nums[i];
+                maxi = i;
+            }
         }
+        return maxi;
     }
 }
