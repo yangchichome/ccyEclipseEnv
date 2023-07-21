@@ -5,47 +5,52 @@ public class leet210 {
 }
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int n = numCourses;
-        int s = prerequisites.length;
-        List[] posts = new ArrayList[n];
-        int[] level = new int[n];
+        
+        List[] nexts = new List[numCourses];
+        int[] order = new int[numCourses];
+        ArrayList<Integer> result = new ArrayList<>();
 
-        for (int i=0; i<n; i++){
-            posts[i] = new ArrayList<Integer>();
+        for(int i=0; i<numCourses; i++){
+            nexts[i] = new ArrayList<Integer>();
         }
 
-        for(int i=0; i<s; i++){
-            int post = prerequisites[i][0];
-            int pre = prerequisites[i][1];
-            level[post]++;
-            posts[pre].add(post);
+        for(int i=0; i<prerequisites.length; i++){
+            int preCourse = prerequisites[i][1];
+            int nextCourse = prerequisites[i][0];
+            // System.out.println("pre:"+preCourse+", next:"+nextCourse);
+            order[nextCourse]++;
+            nexts[preCourse].add(nextCourse);
         }
 
         Queue<Integer> queue = new LinkedList<>();
-        for(int i=0; i<n; i++){
-            if (level[i] == 0){
-                queue.add(i);
-                System.out.println("queue:"+i);
+        for(int i=0; i<numCourses; i++){
+            if (order[i] == 0){
+                queue.offer(i);
             }
         }
-        
-        int[] result = new int[n];
-        int count = 0;
+
         while(!queue.isEmpty()){
-            int first = queue.poll();
-            int size = posts[first].size();
-            System.out.println("count:"+count);
-            result[count++] = first;
-            for (int i=0; i<size; i++){ 
-                int post = (int) posts[first].get(i);
-                level[post]--;
-                if (level[post] == 0){
-                    queue.offer(post);
+            int preCourse = queue.poll();
+            result.add(preCourse);
+            List<Integer> nextCourses = nexts[preCourse];
+            for(int c: nextCourses){
+                order[c]--;
+                if(order[c] == 0){
+                    queue.offer(c);
                 }
-            } 
+            }
         }
 
-        return count == n ? result : new int[0];
+        // if (result.size() == 0){
+        //     return new int[0];
+        // }
+        // System.out.println("result Size:"+result.size());
+        int[] ans = new int[result.size()];
+        for(int i=0; i<result.size(); i++){
+            ans[i] =  result.get(i);
+        }
+
+        return result.size() == numCourses? ans:new int[0];
 
     }
 }

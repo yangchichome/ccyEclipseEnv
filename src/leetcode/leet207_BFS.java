@@ -5,42 +5,44 @@ public class leet207_BFS {
 }
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        int n = numCourses;
-        int len = prerequisites.length;
-        List[] posts = new ArrayList[n];
-        int[] level = new int[n];
-
-        for (int i=0; i<n; i++){
-            posts[i] = new ArrayList<Integer>();
-        }
-        for (int i=0; i<len; i++){
-            int pre = prerequisites[i][1];
-            int post = prerequisites[i][0];
-            level[post]++;
-            posts[pre].add(post); 
+        if (prerequisites.length == 0 || prerequisites[0].length == 0){
+            return true;
         }
 
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i=0; i<n; i++){
-            if(level[i] == 0){
+        List[] nextCourses = new List[numCourses];
+        int[] degree = new int[numCourses];
+
+        for(int i=0; i<numCourses; i++){
+            nextCourses[i] = new ArrayList<Integer>();
+        }
+
+        for(int i=0; i<prerequisites.length; i++){
+            int preC = prerequisites[i][1];
+            int nextC = prerequisites[i][0];
+            degree[nextC]++;
+            nextCourses[preC].add(nextC); 
+        }
+        Queue<Integer> queue = new LinkedList(); 
+
+        for(int i=0; i<numCourses; i++){
+            if (degree[i] == 0){
                 queue.offer(i);
             }
         }
 
-        int count = 0;
+        int count=0;
         while(!queue.isEmpty()){
-            int pre = queue.poll();
-            int size = posts[pre].size();
+            int preC = queue.poll();
             count++;
-            for (int i=0; i<size; i++){
-                int post = (int) posts[pre].get(i);
-                level[post]--;
-                if (level[post] == 0){
-                    queue.offer(post);
+            List<Integer> nextCs = nextCourses[preC];
+            for(int point: nextCs){
+                degree[point]--;
+                if (degree[point] == 0){
+                    queue.offer(point);
                 }
             }
         }
 
-        return count == n;
+        return count == numCourses;
     }
 }
