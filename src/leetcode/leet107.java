@@ -21,28 +21,32 @@ public class leet107 {
 class Solution {
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
+        
 
-        if (root == null) return result;
-
+        if(root == null) return result;
+        
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
-
         while(!queue.isEmpty()){
-            int n = queue.size();
-            List<Integer> sublist = new ArrayList<>();
-            for (int i=0; i<n; i++){
-                TreeNode node = queue.poll();
-                sublist.add(node.val);
+            int s = queue.size();
+            List<Integer> ans = new ArrayList<>();
+            for(int i=0; i<s; i++){
+                TreeNode n = queue.poll();
+                ans.add(n.val);
 
-                if (node.right != null) queue.offer(node.right);
-                if (node.left != null) queue.offer(node.left);
+                if (n.left != null){
+                    queue.offer(n.left);
+                }
+                if(n.right != null){
+                    queue.offer(n.right);
+                }
             }
-            Collections.reverse(sublist);
 
-            result.add(sublist);
+            result.add(ans);
         }
-        
-        Collections.reverse(result);    
+
+        Collections.reverse(result);
+
         return result;
     }
 }

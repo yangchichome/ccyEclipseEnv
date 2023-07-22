@@ -25,50 +25,46 @@ class Node {
 
 class Solution {
  public Node cloneGraph(Node node) {
-     if (node == null){
-         return null;
-     }
+     if (node == null) return null;
+     // get Node to List
+     List<Node> nodes = getNodes(node);
 
-     //set Node list
-     ArrayList<Node> nodes = getNodes(node);
-
-     //clone nodes
-     HashMap<Node, Node> map = new HashMap();
+     //Map node to new node with same val
+     Map<Node,Node> map = new HashMap<>();
      for(Node n: nodes){
-         map.put(n, new Node(n.val));
-     }
-     
-     //clone edges
-     for(Node n: nodes){
-         Node newNode = map.get(n);
-         for(Node e: n.neighbors){
-             Node newEdge = map.get(e);
-             newNode.neighbors.add(newEdge);
+         if (!map.containsKey(n)){
+             map.put(n, new Node(n.val));
          }
-         System.out.println("");
+     }
+
+     //Create node2
+     for(Node n:nodes){
+         Node nodeNew = map.get(n);
+         for(Node neighbor: n.neighbors){
+             Node neiNew = map.get(neighbor); 
+             nodeNew.neighbors.add(neiNew);
+         }
      }
 
      return map.get(node);
  }
 
- public ArrayList<Node> getNodes(Node node) {
-     Set<Node> set = new HashSet<>();
+ private List<Node> getNodes(Node node){
      Queue<Node> queue = new LinkedList<>();
+     HashSet<Node> set = new HashSet<>();
 
      queue.offer(node);
      set.add(node);
-
-     while (!queue.isEmpty()) {
-         Node n = queue.poll();
-         for (Node nei : n.neighbors) {
-             if (!set.contains(nei)) {
-                 queue.offer(nei);
-                 set.add(nei);
+     while(!queue.isEmpty()){
+         Node head = queue.poll();
+         for(Node n: head.neighbors){
+             if (!set.contains(n)){
+                 set.add(n);
+                 queue.offer(n);
              }
          }
      }
 
      return new ArrayList<Node>(set);
  }
-
 }
