@@ -21,15 +21,13 @@ public class MovingAverage {
      */
     public double next(int val) {
         // write your code here
-        sum += val;
-
         if (queue.size() == size){
             sum -= queue.poll();
-        }
 
+        }
+        sum += val;
         queue.offer(val);
 
-        return sum / queue.size();
-
+        return sum/queue.size();
     }
 }

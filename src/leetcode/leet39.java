@@ -6,31 +6,25 @@ public class leet39 {
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
-        if (candidates.length == 0) return result;
-
         List<Integer> partial = new ArrayList<>();
         Arrays.sort(candidates);
-
         dfs(candidates, 0, target, partial, result);
-
         return result;
     }
-
-    private void dfs(int[] candidates, int startIndex, int target, List<Integer> partial, List<List<Integer>> result){
-        if (target == 0) {
-            result.add(new ArrayList<Integer>(partial));
-            return;
+    private void dfs(int[] arr, int startIdx, int target, List<Integer> partial, List<List<Integer>> result){    
+        if (target == 0){
+            result.add(new ArrayList<>(partial));
         }
 
-        for (int i=startIndex; i<candidates.length; i++){
-
-            if (candidates[i] > target){
+        for(int i=startIdx; i<arr.length; i++){
+            int targetNew = target - arr[i];
+            if (targetNew < 0){
                 break;
             }
-            partial.add(candidates[i]);
-            dfs(candidates, i, target - candidates[i], partial, result);
-            partial.remove(partial.size()-1);
 
+            partial.add(arr[i]);
+            dfs(arr, i, targetNew, partial, result);
+            partial.remove(partial.size()-1);
         }
     }
 }

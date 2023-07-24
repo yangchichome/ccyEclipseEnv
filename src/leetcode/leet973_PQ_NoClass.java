@@ -1,6 +1,6 @@
 package leetcode;
 
-public class leet973_PQ {
+public class leet973_PQ_NoClass {
 
 }
 class Solution {
