@@ -3,53 +3,29 @@ package lintcode;
 public class lint685 {
 
 }
-class DataStream {
-    private ListNode head, tail;
-    private Map<Integer, ListNode> preNode;
-    private Set<Integer> duplicates;
+class firstUnique{
+    Set<Integer> unique = new LinkedHashSet<>();
+    Set<Integer> all = new HashSet<>();
 
-    public DataStream (){
-        head = new ListNode(0);
-        tail = head;
-        preNode = new HashMap<>();
-        duplicates = new HashSet<>();
+    public firstUnique(){
+        // for(int x: nums){
+        //     add(x);
+        // }
     }
 
-    public void add(int x){
-        if (duplicates.contains(x)){
-            return;
+    public int showFirstUnique(){
+        if (unique.isEmpty()){
+            return -1;
         }
-
-        if (preNode.containsKey(x)){
-            remove(x);
-            duplicates.add(x);
-        }else{
-            ListNode nodeNew = new ListNode(x);
-            preNode.put(x, tail);
-            tail.next = nodeNew;
-            tail = nodeNew;
-        }
+        return unique.iterator().next();
     }
 
-    public void remove (int x){
-        ListNode pre = preNode.get(x);
-
-        pre.next = pre.next.next;
-        preNode.remove(x);
-
-        if (pre.next != null){
-            preNode.put(pre.next.val, pre);
-        }else{
-            tail = pre;
+    public void add(int value){
+        if (all.add(value)){
+            unique.add(value);
+        } else{
+            unique.remove(value);
         }
-
-    }
-
-    public int firstUnique(){
-        if (head.next != null){
-            return head.next.val;
-        }
-        return -1;
     }
 }
 
@@ -61,16 +37,15 @@ public class Solution {
      */
     public int firstUniqueNumber(int[] nums, int number) {
         // Write your code here
-        DataStream ds = new DataStream();
+        firstUnique fU = new firstUnique();
 
-        for (int i=0; i<nums.length; i++){
-            ds.add(nums[i]);
+        for(int i=0; i<nums.length; i++){
+            fU.add(nums[i]);
             if (nums[i] == number){
-                return ds.firstUnique();
+                return fU.showFirstUnique();
             }
         }
 
         return -1;
     }
-
 }
