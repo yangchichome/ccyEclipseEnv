@@ -13,14 +13,16 @@ public class Solution {
         // write your code here
         int n = a.length;
         int m = b[0].length;
-        int[][] result = new int[n][m];
-        int len = a[0].length;
+        int[][] ans = new int[n][m];
 
-        for (int r=0;r<n;r++)
-            for (int c=0;c<m;c++)
-                for (int k=0;k<len;k++)
-                    result[r][c] += a[r][k]*b[k][c];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                for(int k=0; k<a[0].length; k++){
+                    ans[i][j] += a[i][k]*b[k][j]; 
+                }
+            }
+        }
 
-        return result;
+        return ans;
     }
 }

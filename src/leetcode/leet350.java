@@ -5,34 +5,27 @@ public class leet350 {
 }
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
-
-        int m = nums1.length;
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i=0; i<m; i++){
-            if (map.containsKey(nums1[i])){
-                map.put(nums1[i], map.get(nums1[i]) + 1);
-
+        for(int x:nums1){
+            if (map.containsKey(x)){
+                map.put(x, map.get(x)+1);
             }else{
-                map.put(nums1[i], 1);
-
+                map.put(x, 1);
             }
         }
-
-        int n = nums2.length;
-        List<Integer> temp = new ArrayList<>();
-        for (int i=0; i<n ; i++){
-            int x = nums2[i];
+        List<Integer> tmp = new ArrayList<>();
+        for(int x: nums2){
             if (map.containsKey(x) && map.get(x) > 0){
                 map.put(x, map.get(x)-1);
-                temp.add(x);
+                tmp.add(x);
             }
         }
-
-        int[] result = new int[temp.size()];
-        for (int i=0; i<temp.size(); i++){
-            result[i] = temp.get(i);
+        int[] result = new int[tmp.size()];
+        for(int i=0; i<tmp.size(); i++){
+            result[i] = tmp.get(i);
         }
 
         return result;
+
     }
 }

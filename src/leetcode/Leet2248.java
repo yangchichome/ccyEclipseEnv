@@ -6,15 +6,15 @@ public class Leet2248 {
 class Solution {
     public List<Integer> intersection(int[][] nums) {
         int[] count = new int[1001];
-        for(int[] row: nums){
-            for(int val: row){
-                count[val]++ ;
+
+        for(int i=0; i<nums.length; i++){
+            for(int j=0; j<nums[i].length; j++){
+                count[nums[i][j]]++;
             }
         }
-
         List<Integer> result = new ArrayList<>();
-        for(int i=0; i<count.length; i++){
-            if(count[i] == nums.length){
+        for(int i=1; i<1001; i++){
+            if (count[i] == nums.length){
                 result.add(i);
             }
         }
