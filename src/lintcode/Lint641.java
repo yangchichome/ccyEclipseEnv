@@ -12,40 +12,37 @@ public class Solution {
      */
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
         // write your code here
-        long left = (long) lower;
-        long right = (long) upper;
-        int n = nums.length;
-        
         List<String> result = new ArrayList<>();
-        
-        if (n == 0){
-            add(result, left-1, right+1);
+        if (nums.length == 0){
+            updateAns((long)lower-1, (long)upper+1, result);
             return result;
         }
-
-        add(result, left-1, nums[0]);
-        for(int i=1; i<n; i++){
-            add(result, nums[i-1], nums[i]);
+        for(int i=0; i<nums.length; i++){
+            if (i == 0){
+                updateAns((long)lower-1, (long)nums[i], result);
+            }
+            if (i == nums.length-1){
+                updateAns((long)nums[i], (long)upper+1, result);
+                break;
+            }
+            updateAns((long)nums[i], (long)nums[i+1], result);
         }
-        add(result, nums[n-1], right+1);
 
         return result;
     }
 
-    private void add(List<String> result, long left, long right){
-        if (left == right){
-            return;
-        }else if (left+1 == right){ 
-            return;
-        }else if (left+1 == right-1){
-            result.add(String.valueOf(left+1));
-        }else{
-            StringBuilder sb = new StringBuilder();
-            sb.append(String.valueOf(left+1));
+    private void updateAns(long s, long e, List<String> result){
+        if (Math.abs(s-e) < 2) return;
+        
+        StringBuilder sb = new StringBuilder();
+        long start = s+1;
+        long end = e-1;
+        sb.append(start);
+        if (start != end){
             sb.append("->");
-            sb.append(String.valueOf(right-1));
-            result.add(sb.toString());
-        }
+            sb.append(end);
+        }    
+        
+        result.add(sb.toString());
     }
-
 }
