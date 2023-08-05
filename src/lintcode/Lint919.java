@@ -13,23 +13,14 @@ public class Lint919 {
  *     }
  * }
  */
-class Point {
-    int time;
-    int flag;
-
-    public Point(int time, int flag){
+class book {
+    public int time;
+    public int num;
+    public book (int time, int num){
         this.time = time;
-        this.flag = flag;
+        this.num = num;
     }
-
-    public static Comparator<Point> PointCompare = new Comparator<Point>(){
-        public int compare(Point p1, Point p2){
-            if (p1.time == p2.time) return p1.flag - p2.flag;
-            else return p1.time - p2.time;
-        }
-    };
 }
-
 public class Solution {
     /**
      * @param intervals: an array of meeting time intervals
@@ -37,22 +28,19 @@ public class Solution {
      */
     public int minMeetingRooms(List<Interval> intervals) {
         // Write your code here
-        List<Point> points = new ArrayList<>(intervals.size()*2);
-        for (Interval inter : intervals){
-            points.add(new Point(inter.start, 1));
-            points.add(new Point(inter.end, -1));
+        PriorityQueue<book> pq = new PriorityQueue<>((b1, b2) -> b1.time - b2.time);
+        for(Interval s: intervals){
+            pq.add(new book(s.start, 1));
+            pq.add(new book(s.end, -1));
         }
-
-        Collections.sort(points,Point.PointCompare);
         int count = 0;
-        int ans = 0;
-
-        for (Point point : points){
-            count += point.flag;
-
-            ans = Math.max(ans, count);
+        int max = 0;
+        while(!pq.isEmpty()){
+            book tmp = pq.poll();
+            count += tmp.num;
+            max = Math.max(max, count);
         }
 
-        return ans;
+        return max;
     }
 }
