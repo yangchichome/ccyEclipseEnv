@@ -14,56 +14,41 @@ public class leet160 {
  *     }
  * }
  */
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * }
- */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        int lenA = 0;
-        int lenB = 0;
-
+        int l1 = 0;
+        int l2 = 0;
         ListNode A = headA;
         ListNode B = headB;
         while(A != null){
-            lenA++;
+            l1++;
             A = A.next;
         }
         while(B != null){
-            lenB++;
+            l2++;
             B = B.next;
-        }
-        A = headA;
-        B = headB;
-        if (lenA > lenB){
-            while(lenA != lenB){
-                lenA--;
-                A = A.next;
+        }        
+
+        if (l1 > l2){
+            int del = l1 -l2;
+            while(del > 0){
+                headA = headA.next;
+                del--;
             }
-        }else{
-            while(lenA != lenB){
-                lenB--;
-                B = B.next;
+        }
+        if (l2 > l1){
+            int del = l2 -l1;
+            while(del > 0){
+                headB = headB.next;
+                del--;
             }
         }
 
-        for (int i=0; i<lenA; i++){
-            if (A == B){
-                return A;
-            }else{
-                A = A.next;
-                B = B.next;
-            }
+        while(headA != headB){
+            headA = headA.next;
+            headB = headB.next;
         }
 
-        return null;
-        
+        return headA;
     }
 }
