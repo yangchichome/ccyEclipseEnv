@@ -5,34 +5,24 @@ public class leet125 {
 }
 class Solution {
     public boolean isPalindrome(String s) {
-        int l = 0;
-        int r = s.length()-1;
-
-        
-        while (l < r){
-
-            while (l < s.length() && !isValid(s.charAt(l))){
-                l++;
+        int start = 0;
+        int end = s.length()-1;
+        while(start<end){
+            while(start < s.length() -1 && !Character.isLetter(s.charAt(start)) && !Character.isDigit(s.charAt(start))){
+                start++;
             }
-            if (l == s.length()){
-                return true;
+            while(end >=0 && !Character.isLetter(s.charAt(end)) && !Character.isDigit(s.charAt(end))){
+                end--;
             }
-
-            while (r >= 0 && !isValid(s.charAt(r))){
-                r--;
+            if (start < end){
+                if (Character.toLowerCase(s.charAt(start)) != Character.toLowerCase(s.charAt(end))){
+                    return false;
+                }
+                start++;
+                end--;
             }
-
-            if (Character.toLowerCase(s.charAt(l)) == Character.toLowerCase(s.charAt(r))){
-                l++;
-                r--;
-            }else{
-                return false;
-            } 
         }
-        return true;
-    }
 
-    private boolean isValid(char c){
-        return Character.isDigit(c) || Character.isLetter(c);
+        return true;
     }
 }

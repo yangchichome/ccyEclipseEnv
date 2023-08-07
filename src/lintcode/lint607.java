@@ -8,13 +8,13 @@ public class TwoSum {
      * @param number: An integer
      * @return: nothing
      */
-    public Map<Integer,Integer> map = new HashMap<>();
+    private Map<Integer,Integer> map = new HashMap<>();
     public void add(int number) {
         // write your code here
-        if (map.containsKey(number)){
-            map.put(number, map.get(number)+1);
-        }else{
+        if (!map.containsKey(number)){
             map.put(number, 1);
+        }else{
+            map.put(number, map.get(number)+1);
         }
     }
 
@@ -24,12 +24,15 @@ public class TwoSum {
      */
     public boolean find(int value) {
         // write your code here
-        for(int x: map.keySet()){
-            map.put(x, map.get(x)-1);
-            if(map.containsKey(value - x) && map.get(value-x) >= 1){
+        for(Map.Entry<Integer, Integer> entry: map.entrySet()){
+            int other = value - entry.getKey();
+            if (other == entry.getKey()) {
+                if (entry.getValue() > 1){
+                    return true;
+                }
+            }else if (map.containsKey(other)){
                 return true;
             }
-            map.put(x, map.get(x)+1);
         }
 
         return false;

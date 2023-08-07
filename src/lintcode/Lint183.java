@@ -11,39 +11,40 @@ public class Solution {
      */
     public int woodCut(int[] l, int k) {
         // write your code here
-        if (l == null || l.length == 0) return 0;
-        // len max.L[]  --> 1 P
-        // len 114      --> 7 p
-        // len ?        --> k p
-        // len 1        --> Sum.L[] p
-        // getPieces(int len)
+        if (l.length == 0) return 0;
+        //len   :   numbers
+        //max   :   1
+        //<?    :   k-1
+        //=?    :   k
+        //>?    :   k+1
+        //1     :   num.sum
 
-        long s = 0;
-        long e = 0;
-        for(int w:l){
-            e += w;
-        }
-
-        while(s+1 < e){
-            long m = s +(e-s)/2;
-            long pieces = getPieces(l, m);
-            // System.out.println("s:"+s+", e:"+e+", m:"+m+", p"+pieces);
-            if (pieces >= k){
-                s = m;
-            }else if (pieces < k){
-                e = m;
+        int lens = 0;
+        int lene = 0;
+        for(int x: l){
+            if (lene < x){
+                lene = x;
             }
         }
-        return (int)s;
 
-    }
-
-    private long getPieces(int[] woods, long lenFinal){
-        long pieces = 0;
-        for(int woodLen: woods){
-            pieces += woodLen/lenFinal;
+        //  k-1 < k < k+1
+        while(lens+1 < lene){
+            int lenm = lens + (lene-lens)/2;
+            int mNum = getNumBylen(l, lenm);
+            if (mNum >= k) {
+                lens = lenm;
+            }else{
+                lene = lenm;
+            }
         }
-
-        return pieces;
+        if (getNumBylen(l, lene) == k) return lene;
+        return lens;
+    }
+    private int getNumBylen(int[] nums, int len){
+        int count = 0;
+        for(int x: nums){
+            count += x/len;
+        }
+        return count;
     }
 }

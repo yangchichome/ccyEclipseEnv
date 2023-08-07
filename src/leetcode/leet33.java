@@ -5,36 +5,45 @@ public class leet33 {
 }
 class Solution {
     public int search(int[] nums, int target) {
-        
-        int l = 0;
-        int r = nums.length-1;
+        int s = 0;
+        int e = nums.length-1;
+        if (target < nums[s] && target>nums[e]) return -1;
 
-        while(l+1 < r){
-            int mid = l + (r-l)/2;
-            if (nums[mid] == target) return mid;
-            // System.out.println("mid:"+ mid+" ,l:"+l+" ,r: "+r);
-            // System.out.println("nums[mid]"+nums[mid]+" ,nums[l]:"+nums[l]+" ,nums[r]"+nums[r]+" ,target:"+target);
-            if (nums[mid] < nums[r]){
-                if (target <= nums[r] && target >= nums[mid]){
-                    // System.out.println("case1");
-                    l = mid;
-                }else{
-                    // System.out.println("case2");
-                    r = mid;
-                }
+        while(s+1 < e){
+            int m = s + (e-s)/2;
+            if (nums[s] == target ) return s;
+            if (nums[e] == target ) return e;
+            if (nums[m] == target ) return m;
+
+            if (nums[s] < nums[e]){
+                if(nums[m] > target) {
+                    e = m;
+                }else if(nums[m] < target){
+                    s = m;
+                }       
             }else{
-                if (target >= nums[l] && target <= nums[mid]){
-                    // System.out.println("case3");
-                    r = mid;
+                if (nums[m] > nums[s]){
+                    if (target > nums[s] && target < nums[m]){
+                        e = m;
+                    }else {
+                        s = m;
+                    }
                 }else{
-                    // System.out.println("case4");
-                    l = mid;
+                    if (target < nums[e] && target > nums[m]){
+                        s = m;
+                    }else{
+                        e = m;
+                    }
                 }
             }
         }
-        if (nums[r] == target) return r;
-        if (nums[l] == target) return l;
-        return -1;
 
+        if (nums[s] == target){
+            return s;
+        } else if (nums[e] == target){
+            return e;
+        }
+
+        return -1;
     }
 }

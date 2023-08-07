@@ -6,20 +6,24 @@ public class Leet278 {
 /* The isBadVersion API is defined in the parent class VersionControl.
 boolean isBadVersion(int version); */
 
+
 public class Solution extends VersionControl {
-    public int firstBadVersion(int n) {
-        int l = 1;
-        int r = n;
+public int firstBadVersion(int n) {
+  int s = 1;
+  int e = n;
 
-        while (l+1 < r){
-            int mid = l +(r-l)/2;
-            if (isBadVersion(mid)){
-                r = mid;
-            }else{
-                l = mid;
-            }
-        }
-
-        return isBadVersion(l)? l:r;
-    }
+  while(s+1 < e){
+      int m = s + (e-s)/2;
+      if (isBadVersion(m)){
+          e = m;
+      }else{
+          s = m;
+      }
+  }
+  if (isBadVersion(s)){
+      return s;
+  }
+  
+  return e;
+}
 }
