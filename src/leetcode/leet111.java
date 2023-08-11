@@ -20,22 +20,15 @@ public class leet111 {
  */
 class Solution {
     public int minDepth(TreeNode root) {
-        
         if (root == null) return 0;
 
-        return divConq(root);
-    }
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
 
-    private int divConq(TreeNode root){
-        if (root == null) return 0;
-
-        int left = divConq(root.left);
-        int right = divConq(root.right);
-
-        if (left == 0 || right == 0){
+        if (root.right == null || root.left == null){
             return left + right + 1;
         }
 
-        return Math.min(left, right) + 1;
+        return Math.min(left, right)+1;
     }
 }

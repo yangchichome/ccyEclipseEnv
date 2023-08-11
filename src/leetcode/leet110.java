@@ -19,41 +19,55 @@ public class leet110 {
  * }
  */
 
-class resultType {
-    boolean isBalance;
-    int maxDepth;
-    public resultType(boolean isBalance, int maxDepth){
-        this.isBalance = isBalance;
-        this.maxDepth = maxDepth;
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class treeInfo{
+    public int max;
+    public boolean balance;
+    public treeInfo(int max, boolean balance){
+        this.max = max;
+        this.balance = balance;
     }
-} 
+}
 class Solution {
     public boolean isBalanced(TreeNode root) {
-        
         if (root == null) return true;
 
-        resultType result = dfs(root);
-
-        return result.isBalance;
+        treeInfo result = dfs(root); 
+        
+        return result.balance;
     }
 
-    public resultType dfs(TreeNode root){
-        if (root == null)
-            return new resultType(true, 0);
-
-        resultType left = dfs(root.left);
-        resultType right = dfs(root.right);
-
-        if (!left.isBalance || !right.isBalance){
-            return new resultType(false, -1);
-        }
-        if (Math.abs(left.maxDepth - right.maxDepth) > 1){
-            return new resultType(false, -1);
+    private treeInfo dfs(TreeNode root){
+        if (root == null){
+            return new treeInfo(0, true);
         }
 
-        return new resultType(true, Math.max(left.maxDepth, right.maxDepth) + 1);
+        treeInfo linfo = dfs(root.left);
+        treeInfo rinfo = dfs(root.right);
 
+        if (!linfo.balance || !rinfo.balance){
+            return new treeInfo(0, false);
+        }
+
+        if (Math.abs(linfo.max - rinfo.max) > 1){
+            return new treeInfo(0, false);
+        }
+
+        return new treeInfo(Math.max(linfo.max, rinfo.max)+1, true);             
     }
-
-
 }

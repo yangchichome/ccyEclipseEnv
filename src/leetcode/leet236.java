@@ -14,27 +14,26 @@ public class leet236 {
  */
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null) return null;
-
-        TreeNode result = dfs(root, p, q);
-
-        return result;
-    }
-
-    private TreeNode dfs(TreeNode root, TreeNode p, TreeNode q){
-        if (root == null) return null;
-        if (root == q || root == p){
+        if (root == null){
+            return null;
+        }
+        if (root == p || root == q){
             return root;
         }
 
-        TreeNode left = dfs(root.left, p, q);
-        TreeNode right = dfs(root.right, p, q);
+        TreeNode leftA = lowestCommonAncestor(root.left, p, q);
+        TreeNode rightA = lowestCommonAncestor(root.right, p, q);
 
-        if (left != null && right != null) return root;
-        if (left != null) return left;
-        if (right != null) return right;
+        if (leftA != null && rightA != null){
+            return root;
+        }
+        if(leftA != null){
+            return leftA;
+        }
+        if(rightA != null){
+            return rightA;
+        }
 
-        return null; 
-
+        return null;
     }
 }

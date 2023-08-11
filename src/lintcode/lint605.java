@@ -11,85 +11,70 @@ public class Solution {
      */
     public boolean sequenceReconstruction(int[] org, int[][] seqs) {
         // write your code here
-        Map<Integer, Set<Integer>> graph = buildGraph(seqs);
-        Map<Integer, Integer> indegrees = getIndegrees(graph);
-        List<Integer> topoOrder = getTopoOrder(graph, indegrees);
-
-        if(topoOrder == null || topoOrder.size() != org.length){
-            return false;
+        Map<Integer, Set<Integer>> nextNodes = buildNextNodes(seqs);
+        Map<Integer, Integer> nodeLevels = buildNodeLevel(nextNodes);
+        // System.out.prtinln()
+        Queue<Integer> queue = new LinkedList<>();
+        for(int key: nodeLevels.keySet()){
+            // System.out.println("key"+key+" ,val"+nodeLevels.get(key));
+            if(nodeLevels.get(key) == 0){
+                queue.offer(key);
+            }
         }
-
-        for(int i=0; i<org.length; i++){
-            if (org[i] != topoOrder.get(i)){
+        
+        List<Integer> paths = new ArrayList<>();
+        while(!queue.isEmpty()){
+            if (queue.size() > 1){
                 return false;
             }
+            int preNode = queue.poll();
+            paths.add(preNode);
+            for(int nextN: nextNodes.get(preNode)){
+                nodeLevels.put(nextN, nodeLevels.get(nextN)-1);
+                if(nodeLevels.get(nextN) == 0){
+                    queue.offer(nextN);
+                }
+            }
+        }
+
+        if (paths.size() != org.length) return false;
+
+        for(int i=0 ;i<paths.size(); i++){
+            if(paths.get(i) != org[i]) return false;
         }
 
         return true;
-
-
     }
 
-    private Map<Integer, Set<Integer>> buildGraph(int[][] seqs) {
-        Map<Integer, Set<Integer>> graph = new HashMap();
-        for (int[] seq : seqs) {
-            for (int i = 0; i < seq.length; i++) {
-                if (!graph.containsKey(seq[i])) {
-                    graph.put(seq[i], new HashSet<Integer>());
+    private Map<Integer,Set<Integer>> buildNextNodes(int[][] seqs){
+        Map<Integer, Set<Integer>> result = new HashMap<>();
+        for(int[] seq: seqs){
+            for(int i=0; i<seq.length; i++){
+                if (!result.containsKey(seq[i])){
+                    result.put(seq[i], new HashSet<>());
                 }
             }
         }
-        for (int[] seq : seqs) {
-            for (int i = 1; i < seq.length; i++) {
-                graph.get(seq[i - 1]).add(seq[i]);
+        for(int[] seq: seqs){
+            for(int i=1; i<seq.length; i++){
+                result.get(seq[i-1]).add(seq[i]);
             }
         }
-        return graph;
+        return result;
     }
 
-   private Map<Integer, Integer> getIndegrees(Map<Integer, Set<Integer>> graph) {
-        Map<Integer, Integer> indegrees = new HashMap();
-        for (Integer node : graph.keySet()) {
-            indegrees.put(node, 0);
+    private Map<Integer,Integer> buildNodeLevel(Map<Integer,Set<Integer>> nextNodes){
+        Map<Integer, Integer> levels = new HashMap<>();
+        for(int key: nextNodes.keySet()){
+            levels.put(key, 0);
         }
-        for (Integer node : graph.keySet()) {
-            for (Integer neighbor : graph.get(node)) {
-                indegrees.put(neighbor, indegrees.get(neighbor) + 1);
+
+        for(int key: nextNodes.keySet()){
+            for(int x: nextNodes.get(key)){
+                levels.put(x, levels.get(x)+1);
             }
         }
-        return indegrees;
-    }
-    private List<Integer> getTopoOrder(Map<Integer, Set<Integer>> graph, Map<Integer, Integer> indegrees) {
-        
-        Queue<Integer> queue = new LinkedList();
-        List<Integer> topoOrder = new ArrayList();
-        
-        for (Integer node : graph.keySet()) {
-            if (indegrees.get(node) == 0) {
-                queue.offer(node);
-                topoOrder.add(node);
-            }
-        }
-        
-        while (!queue.isEmpty()) {
-            if (queue.size() > 1) {
-                return null;
-            }
-            
-            Integer node = queue.poll();
-            for (Integer neighbor : graph.get(node)) {
-                indegrees.put(neighbor, indegrees.get(neighbor) - 1);
-                if (indegrees.get(neighbor) == 0) {
-                    queue.offer(neighbor);
-                    topoOrder.add(neighbor);
-                }
-            }
-        }
-        
-        if (graph.size() == topoOrder.size()) {
-            return topoOrder;
-        }
-        
-        return null;
+
+        return levels;
     }
 }
