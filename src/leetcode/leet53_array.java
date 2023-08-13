@@ -5,14 +5,17 @@ public class leet53_array {
 }
 class Solution {
     public int maxSubArray(int[] nums) {
+        int e = 0;
         int sum = 0;
-        int maxSum = Integer.MIN_VALUE;
-        for(int x:nums){
-            sum += x;
-            maxSum = Math.max(sum, maxSum);
-            sum = sum>0? sum:0;
+        int max = nums[0];
+        while(e < nums.length){
+            sum += nums[e];
+            if (sum < nums[e]){
+                sum = nums[e];
+            }
+            max = Math.max(sum, max);
+            e++;
         }
-
-        return maxSum;
+        return max;
     }
 }

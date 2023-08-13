@@ -5,27 +5,38 @@ public class leet877_dp {
 }
 class Solution {
     private int[][] dp;
-
     public boolean stoneGame(int[] piles) {
         int n = piles.length;
         dp = new int[n][n];
+
+        int result = dfs(piles, 0, piles.length-1);
         int sum = 0;
-        for(int i=0; i<n; i++){
-            sum += piles[i];
+        for(int x: piles){
+            sum += x;
         }
-        
-        return dfs(piles, 0, n-1) > sum/2; 
+
+        return result > sum/2;
     }
-    private int dfs(int[] piles, int l, int r){
-        if (l > r) return 0;
-        if (dp[l][r] != 0) return dp[l][r];
 
-        boolean isEven = (r-l)%2 == 0 ? true : false;
-        int left = isEven? piles[l] : 0;
-        int right = isEven? piles[r] : 0;
+    private int dfs(int[] nums, int s, int e){
+        if (s>e){
+            return 0;
+        }
+        if (dp[s][e] != 0) return dp[s][e];
 
-        dp[l][r] = Math.max(dfs(piles, l+1, r) + left, dfs(piles, l, r-1) + right);
+        // int count = 0;
+        boolean isEven = (e-s)%2 == 0? true:false;
+        int firstP = 0;
+        int finalP = 0;
+        if(isEven){
+            firstP += nums[s];
+            finalP += nums[e];
+        }
 
-        return dp[l][r];  
+        firstP += dfs(nums, s+1, e);
+        finalP += dfs(nums, s, e-1);
+        dp[s][e] = Math.max(firstP, finalP);
+
+        return dp[s][e];
     }
 }

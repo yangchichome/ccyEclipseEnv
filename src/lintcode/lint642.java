@@ -5,8 +5,8 @@ public class lint642 {
 }
 public class MovingAverage {
     private Queue<Integer> queue;
-    private double sum;
-    private int size;
+    private int size; 
+    private long sum;
     /*
     * @param size: An integer
     */public MovingAverage(int size) {
@@ -21,13 +21,11 @@ public class MovingAverage {
      */
     public double next(int val) {
         // write your code here
+        sum += val;
         if (queue.size() == size){
             sum -= queue.poll();
-
         }
-        sum += val;
         queue.offer(val);
-
-        return sum/queue.size();
+        return (double) sum/queue.size();
     }
 }

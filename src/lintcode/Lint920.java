@@ -21,19 +21,21 @@ public class Solution {
      */
     public boolean canAttendMeetings(List<Interval> intervals) {
         // Write your code here
-        if (intervals == null || intervals.size() == 0) return true;
-
-        intervals.sort(new Comparator<Interval>(){
-            public int compare(Interval l1, Interval l2){
-                return l1.start -l2.start;
+        Comparator<Interval> IntervalCompare = new Comparator<>(){
+            public int compare (Interval l1, Interval l2){
+                return l1.start - l2.start;
             }
-        });
-        int end = intervals.get(0).end;
-        for (int i=1; i<intervals.size(); i++){
-             if (intervals.get(i).start < end){
-                 return false;
-             }
-             end = Math.max(end,intervals.get(i).end);
+        };
+
+        Collections.sort(intervals, IntervalCompare);
+        int start = 0;
+        int end = 0;
+        for (Interval interval: intervals){
+            start = interval.start;
+            if(end > start){
+                return false;
+            }
+            end = Math.max(end, interval.end);
         }
 
         return true;

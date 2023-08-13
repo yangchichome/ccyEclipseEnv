@@ -5,22 +5,18 @@ public class Leet643 {
 }
 class Solution {
     public double findMaxAverage(int[] nums, int k) {
-        
-        double maxAvg = 0.0;
         int sum = 0;
-        int maxSum = Integer.MIN_VALUE;
-        for(int i=0; i<nums.length; i++){
-            // System.out.println("i "+i);
+        for(int i=0; i<k; i++){
             sum += nums[i];
-            if (i < k-1){
-                continue;
-            }else if (i >= k){
-                sum -= nums[i-k];
-            }
-            maxSum = Math.max(maxSum, sum);
-            // System.out.println("sum:"+sum+" ,maxSum:"+maxSum);
+        }
+        int max = sum;
+        for(int i=k; i<nums.length; i++){
+            sum += nums[i];
+            sum -= nums[i-k];
+
+            max = Math.max(sum, max);
         }
 
-        return (double) maxSum/k;
+        return (double) max/k;
     }
 }

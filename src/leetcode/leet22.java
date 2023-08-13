@@ -6,23 +6,28 @@ public class leet22 {
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<String> result = new ArrayList<>();
-        if (n == 0) return result;
+        StringBuilder sb = new StringBuilder();
 
-        dfs(n, n, "", result);
+        dfs(n, 0, 0, sb, result);
 
         return result;
     }
 
-    private void dfs(int left, int right, String partial, List<String> result){
-        if (left == 0 && right == 0){
-            result.add(partial);
+    private void dfs(int n, int L, int R, StringBuilder sb, List<String> result){
+        if (L == n && R == n){
+            result.add(sb.toString());
         }
 
-        if (left > 0){
-            dfs(left-1, right, partial+"(", result);
+        if (L < n){
+            sb.append("(");
+            dfs(n, L+1, R, sb, result);
+            sb.deleteCharAt(sb.length()-1);
         }
-        if (right > 0 && left < right){
-            dfs(left, right-1, partial+")", result);
+
+        if (R < n && R < L){
+            sb.append(")");
+            dfs(n, L, R+1, sb, result);
+            sb.deleteCharAt(sb.length()-1);
         }
     }
 }

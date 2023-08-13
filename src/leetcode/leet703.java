@@ -5,31 +5,25 @@ public class leet703 {
 }
 class KthLargest {
     private PriorityQueue<Integer> pq;
-    private int size; 
+    private int size;
 
     public KthLargest(int k, int[] nums) {
-        pq = new PriorityQueue<>((q1, q2) -> q1 - q2);
+        pq = new PriorityQueue<>((p1, p2) -> p1-p2);
         size = k;
-        for (int val : nums){
-            add(val);
+        for(int x: nums){
+            add(x);
         }
     }
     
     public int add(int val) {
-
-        if (pq.size() >= size){
-            if (pq.peek() < val){
-
-                pq.poll();
-
-                pq.offer(val);
-            }
-        }else{
-
-            pq.offer(val);
+        pq.offer(val);
+        if(pq.size()>size){
+            pq.poll();
         }
-       
-        return pq.peek();
+        
+        int ans = pq.poll();
+        pq.offer(ans);
+        return ans;
     }
 }
 

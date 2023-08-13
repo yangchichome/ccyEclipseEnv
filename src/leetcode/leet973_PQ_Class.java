@@ -3,43 +3,34 @@ package leetcode;
 public class leet973_PQ_Class {
 
 }
-class coordinate{
+class Coor {
     int x;
     int y;
-    public coordinate(int x, int y){
+    public Coor(int x, int y){
         this.x = x;
         this.y = y;
     }
-}
 
+}
 
 class Solution {
     public int[][] kClosest(int[][] points, int k) {
-        if (points.length <= k){
-            return points;
-        }
+        PriorityQueue<Coor> pq = new PriorityQueue<>((p1, p2) -> ( p2.x*p2.x+p2.y*p2.y -p1.x*p1.x-p1.y*p1.y));
 
-        Comparator<coordinate> coorCompare = new Comparator<>(){
-            public int compare(coordinate c1, coordinate c2){
-                return (c2.x*c2.x + c2.y*c2.y) - (c1.x*c1.x + c1.y*c1.y);
-            }
-        };
-        
-        PriorityQueue<coordinate> pq = new PriorityQueue<>(coorCompare);
-
-        for (int[] coor: points){
-            pq.offer(new coordinate(coor[0], coor[1]));
-
+        for(int[] point: points){
+            pq.offer(new Coor(point[0], point[1]));
             if (pq.size() > k){
                 pq.poll();
             }
         }
-
-        int[][] result = new int[k][2];
-        for(int i=k-1; i>=0; i--){
-            coordinate c = pq.poll();
-            result[i][0] = c.x;
-            result[i][1] = c.y;
+        List<Coor> tmp = new ArrayList<>();
+        while(!pq.isEmpty()){
+            tmp.add(pq.poll());
+        }
+        int[][] result = new int[tmp.size()][2];
+        for(int i=0; i<tmp.size(); i++){
+            result[i][0] = tmp.get(i).x;
+            result[i][1] = tmp.get(i).y;
         }
 
         return result;

@@ -17,21 +17,21 @@ class MyStack {
     }
     
     public int pop() {
-        while (q1.size() > 1){
+        while(q1.size() > 1){
             q2.offer(q1.poll());
-        }        
-        int result = q1.poll();
-        Queue<Integer> temp = q1;
+        }
+        int ans = q1.poll();
+        Queue<Integer> tmp = new LinkedList<>();
         q1 = q2;
-        q2 = temp;
+        q2 = tmp;
 
-        return result;
+        return ans;
     }
     
     public int top() {
-        int result = pop();
-        q1.offer(result);
-        return result;
+        int tmp = pop();
+        q1.offer(tmp);
+        return tmp;
     }
     
     public boolean empty() {
